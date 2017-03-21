@@ -4,7 +4,6 @@ import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.service.PlantHireRequestAssembler;
 import com.buildit.procurement.application.service.RentalService;
-import com.buildit.procurement.domain.model.PlantHireRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +35,7 @@ public class ProcurementRestController {
 //        if (plantName.isPresent() && startDate.isPresent() && endDate.isPresent()) {
 //            if (endDate.get().isBefore(startDate.get()))
 //                throw new IllegalArgumentException("Something wrong with the requested period ('endDate' happens before 'startDate')");
+
             return rentalService.findAvailablePlants(plantName.get(), startDate.get(), endDate.get());
 //        } else
 //            throw new IllegalArgumentException(
