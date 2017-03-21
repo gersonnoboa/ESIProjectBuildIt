@@ -1,6 +1,6 @@
-package com.buildit.rental.application.service;
+package com.buildit.procurement.application.service;
 
-import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
+import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

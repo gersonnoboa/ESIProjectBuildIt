@@ -1,4 +1,4 @@
-package com.buildit.rental.application.dto;
+package com.buildit.procurement.application.dto;
 
 import com.buildit.common.rest.ResourceSupport;
 import lombok.Data;
