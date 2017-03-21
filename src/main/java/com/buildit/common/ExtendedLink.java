@@ -1,4 +1,4 @@
-package com.buildit.common.rest;
+package com.buildit.common;
 
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpMethod;

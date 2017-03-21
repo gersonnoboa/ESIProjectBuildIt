@@ -29,6 +29,7 @@ public class ProcurementRestController {
             @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> startDate,
             @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> endDate) {
 
+
 //        if (plantName.isPresent() && startDate.isPresent() && endDate.isPresent()) {
 //            if (endDate.get().isBefore(startDate.get()))
 //                throw new IllegalArgumentException("Something wrong with the requested period ('endDate' happens before 'startDate')");

@@ -1,14 +1,13 @@
 package com.buildit.procurement.application.dto;
 
-import com.buildit.common.rest.ResourceSupport;
+import com.buildit.common.ResourceSupport;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 public class PlantInventoryEntryDTO extends ResourceSupport {
-    String _id;
     String name;
-    String description;
-    BigDecimal price;
+    LocalDate startDate;
+    LocalDate endDate;
 }

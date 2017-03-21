@@ -1,4 +1,4 @@
-package com.buildit.common.rest.common.domain;
+package com.buildit.common.domain;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

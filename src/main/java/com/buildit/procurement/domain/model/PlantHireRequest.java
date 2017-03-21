@@ -1,6 +1,6 @@
 package com.buildit.procurement.domain.model;
 
-import com.buildit.common.rest.common.domain.BusinessPeriod;
+import com.buildit.common.domain.BusinessPeriod;
 import lombok.Data;
 
 import javax.persistence.*;
