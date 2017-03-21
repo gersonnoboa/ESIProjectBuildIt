@@ -1,10 +1,12 @@
 package com.buildit.procurement.rest.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.buildit.rental.application.services.RentalService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +19,9 @@ import java.util.Optional;
 @RequestMapping("/api/procurements")
 public class ProcurementRestController {
 
+    @Autowired
+    RentalService rentalService;
+
     @GetMapping("/plants")
     public List<?> findAvailablePlants (
             @RequestParam(name = "name", required = false) Optional<String> plantName,
@@ -26,7 +31,8 @@ public class ProcurementRestController {
 //        if (plantName.isPresent() && startDate.isPresent() && endDate.isPresent()) {
 //            if (endDate.get().isBefore(startDate.get()))
 //                throw new IllegalArgumentException("Something wrong with the requested period ('endDate' happens before 'startDate')");
-            return null;
+
+            return rentalService.findAvailablePlants(plantName.get(), startDate.get(), endDate.get());
 //        } else
 //            throw new IllegalArgumentException(
 //                    String.format("Wrong number of parameters: Name='%s', Start date='%s', End date='%s'",
