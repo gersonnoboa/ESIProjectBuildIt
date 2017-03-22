@@ -1,4 +1,4 @@
-package com.buildit.procurement.domain.application;
+package com.buildit.procurement.application.dto;
 
 import com.buildit.common.application.dto.BusinessPeriodDTO;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
@@ -12,6 +12,7 @@ import java.math.BigDecimal;
  */
 @Data
 public class PurchaseOrderDTO {
+
         String _id;
         PlantInventoryEntryDTO plant;
         BusinessPeriodDTO rentalPeriod;

@@ -28,6 +28,6 @@ public class PlantHireRequest {
     @Embedded
     PurchaseOrder order;
 
-    @Column(precision = 8, scale = 2)
-    BigDecimal price;
+//    @Column(precision = 8, scale = 2)
+//    BigDecimal price;
 }

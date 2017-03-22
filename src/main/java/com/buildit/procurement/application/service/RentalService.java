@@ -2,23 +2,16 @@ package com.buildit.procurement.application.service;
 
 import com.buildit.common.domain.BusinessPeriod;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
-import com.buildit.procurement.domain.application.PurchaseOrderDTO;
+import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.POStatus;
 import com.buildit.procurement.domain.model.PlantHireRequest;
 import com.buildit.procurement.domain.model.PlantInventoryEntry;
 import com.buildit.procurement.domain.model.PurchaseOrder;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +40,7 @@ public class RentalService {
 
         return requestRepository.save(request);
     }
-    
+
     //---------------------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------------------------------
