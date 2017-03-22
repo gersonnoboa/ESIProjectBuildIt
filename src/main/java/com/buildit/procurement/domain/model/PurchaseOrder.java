@@ -1,5 +1,6 @@
 package com.buildit.procurement.domain.model;
 
+import com.buildit.common.domain.BusinessPeriod;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -18,5 +19,7 @@ import javax.persistence.Embeddable;
 public class PurchaseOrder {
 
     String order_href;
+    PlantInventoryEntry plant;
+    BusinessPeriod rentalPeriod;
 
 }

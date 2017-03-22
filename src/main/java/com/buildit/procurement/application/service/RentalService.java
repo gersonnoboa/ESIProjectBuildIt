@@ -1,6 +1,8 @@
 package com.buildit.procurement.application.service;
 
+import com.buildit.common.application.dto.BusinessPeriodDTO;
 import com.buildit.common.domain.BusinessPeriod;
+import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.POStatus;
@@ -29,16 +31,36 @@ public class RentalService {
 
     // procurement domain
     //---------------------------------------------------------------------------------------------------------
-    public PlantHireRequest createPlantHireRequest(Long id, BusinessPeriod rentalPeriod,POStatus status,PlantInventoryEntry plant,PurchaseOrder order){
+    public PlantHireRequestDTO createPlantHireRequest(PlantHireRequestDTO phrDTO) {
 
-        PlantHireRequest request = new PlantHireRequest();
-        request.setId(id);
-        request.setRentalPeriod(rentalPeriod);
-        request.setStatus(status);
-        request.setPlant(plant);
-        request.setOrder(order);
+        BusinessPeriod period = BusinessPeriod.of(
+                phrDTO.getRentalPeriod().getStartDate(), phrDTO.getRentalPeriod().getEndDate());
 
-        return requestRepository.save(request);
+        PlantInventoryEntry plant = PlantInventoryEntry.of(
+                phrDTO.getPlant().getName(), phrDTO.getPlant().getPlant_href());
+
+        PurchaseOrderDTO poDTO = new PurchaseOrderDTO();
+        poDTO.setPlant(phrDTO.getPlant());
+        poDTO.setRentalPeriod(phrDTO.getRentalPeriod());
+
+        PurchaseOrderDTO createdPoDTO = restTemplate.postForObject(
+                "http://localhost:8080/api/sales/orders/", poDTO, PurchaseOrderDTO.class);
+
+        PurchaseOrder createdPo = PurchaseOrder.of(
+                createdPoDTO.getOrder_href(),
+                plant,
+                period);
+
+        PlantHireRequest request = PlantHireRequest.of(
+                phrDTO.get_id(),
+                period,
+                phrDTO.getStatus(),
+                plant,
+                createdPo);
+
+        requestRepository.save(request);
+
+        return phrDTO;
     }
 
     //---------------------------------------------------------------------------------------------------------

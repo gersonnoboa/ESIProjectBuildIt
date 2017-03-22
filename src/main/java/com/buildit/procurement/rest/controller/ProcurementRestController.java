@@ -1,14 +1,17 @@
 package com.buildit.procurement.rest.controller;
 
+import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -38,5 +41,16 @@ public class ProcurementRestController {
 //            throw new IllegalArgumentException(
 //                    String.format("Wrong number of parameters: Name='%s', Start date='%s', End date='%s'",
 //                            plantName.get(), startDate.get(), endDate.get()));
+    }
+
+    @PostMapping("/orders")
+    public ResponseEntity<PlantHireRequestDTO> createPlantHireRequest(
+            @RequestParam(name = "plantHireRequest", required = false) Optional<PlantHireRequestDTO> request )
+            throws URISyntaxException{
+
+            PlantHireRequestDTO phrDTO = rentalService.createPlantHireRequest(request.get());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(new URI(phrDTO.getId().getHref()));
+            return new ResponseEntity<PlantHireRequestDTO>(phrDTO, headers, HttpStatus.CREATED);
     }
 }

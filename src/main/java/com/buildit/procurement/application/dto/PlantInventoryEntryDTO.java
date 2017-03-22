@@ -8,6 +8,5 @@ import java.time.LocalDate;
 @Data
 public class PlantInventoryEntryDTO extends ResourceSupport {
     String name;
-    LocalDate startDate;
-    LocalDate endDate;
+    String plant_href;
 }

@@ -1,5 +1,6 @@
 package com.buildit.procurement.domain.model;
 
+import com.buildit.common.ResourceSupport;
 import com.buildit.common.domain.BusinessPeriod;
 import lombok.Data;
 
@@ -13,8 +14,8 @@ import java.math.BigDecimal;
 @Entity
 @Data
 public class PlantHireRequest {
-    @Id @GeneratedValue
-    Long id;
+    @Id
+    String _id;
 
     @Embedded
     BusinessPeriod rentalPeriod;
@@ -28,6 +29,13 @@ public class PlantHireRequest {
     @Embedded
     PurchaseOrder order;
 
-//    @Column(precision = 8, scale = 2)
-//    BigDecimal price;
+    public static PlantHireRequest of(String id, BusinessPeriod rentalPeriod, POStatus status, PlantInventoryEntry plant, PurchaseOrder order) {
+        PlantHireRequest phr = new PlantHireRequest();
+        phr._id = id;
+        phr.plant = plant;
+        phr.rentalPeriod = rentalPeriod;
+        phr.status = status;
+        phr.order = order;
+        return phr;
+    }
 }
