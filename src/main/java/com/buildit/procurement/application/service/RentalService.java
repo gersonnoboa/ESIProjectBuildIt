@@ -1,6 +1,7 @@
 package com.buildit.procurement.application.service;
 
 import com.buildit.common.domain.BusinessPeriod;
+import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.POStatus;
@@ -27,12 +28,32 @@ public class RentalService {
     @Autowired
     PlantHireRequestRepository requestRepository;
 
+    @Autowired
+    PlantHireRequestAssembler plantHireRequestAssembler;
+
+    public PlantHireRequestDTO createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
+
+        PlantInventoryEntry plant = PlantInventoryEntry.of(
+                hireRequestDTO.getPlant().getName(), hireRequestDTO.getPlant().getPlant_href());
+        PurchaseOrder po = PurchaseOrder.of(hireRequestDTO.getOrder().getOrder_href());
+
+        PlantHireRequest request = new PlantHireRequest();
+        request.set_id(hireRequestDTO.get_id());
+        request.setRentalPeriod(BusinessPeriod.of(
+                hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()));
+        request.setStatus(hireRequestDTO.getStatus());
+        request.setPlant(plant);
+        request.setOrder(po);
+
+        return plantHireRequestAssembler.toResource(requestRepository.save(request));
+    }
+
     // procurement domain
     //---------------------------------------------------------------------------------------------------------
     public PlantHireRequest createPlantHireRequest(String id, BusinessPeriod rentalPeriod,POStatus status,PlantInventoryEntry plant,PurchaseOrder order){
 
         PlantHireRequest request = new PlantHireRequest();
-        request.setId(id);
+        request.set_id(id);
         request.setRentalPeriod(rentalPeriod);
         request.setStatus(status);
         request.setPlant(plant);

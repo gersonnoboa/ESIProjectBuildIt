@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Data
 public class PlantHireRequest {
     @Id
-    String id;
+    String _id;
 
     @Embedded
     BusinessPeriod rentalPeriod;

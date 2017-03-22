@@ -14,9 +14,5 @@ import java.math.BigDecimal;
 @Data
 public class PurchaseOrderDTO extends ResourceSupport {
 
-        String _id;
-        PlantInventoryEntryDTO plant;
-        BusinessPeriodDTO rentalPeriod;
-        BigDecimal total;
-        POStatus status;
+    String order_href;
 }
