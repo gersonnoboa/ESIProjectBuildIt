@@ -98,7 +98,7 @@ public class RentalService {
     //    uriVariables - the variables to expand the template
 
     //---------------------------------------------------------------------------------------------------------
-    void  rejectPurchaseOrder(String id)
+    public void  rejectPurchaseOrder(String id)
     {
         restTemplate.delete("http://localhost:8080/api/sales/orders/{id}/accept",id);
 
@@ -107,7 +107,7 @@ public class RentalService {
 //        uriVariables - the variables to expand in the template
     }
     //---------------------------------------------------------------------------------------------------------
-    void  closePurchaseOrder(String id)
+    public void  closePurchaseOrder(String id)
     {
         restTemplate.delete("http://localhost:8080/api/sales/orders/{id}/",id);
     }

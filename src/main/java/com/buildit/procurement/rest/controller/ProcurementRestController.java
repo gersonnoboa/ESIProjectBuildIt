@@ -1,7 +1,10 @@
 package com.buildit.procurement.rest.controller;
 
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
+import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.application.service.RentalService;
+import com.buildit.procurement.domain.model.PurchaseOrder;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +33,36 @@ public class ProcurementRestController {
             @RequestParam(name = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> endDate) {
 
 
-//        if (plantName.isPresent() && startDate.isPresent() && endDate.isPresent()) {
-//            if (endDate.get().isBefore(startDate.get()))
-//                throw new IllegalArgumentException("Something wrong with the requested period ('endDate' happens before 'startDate')");
+        if (plantName.isPresent() && startDate.isPresent() && endDate.isPresent()) {
+            if (endDate.get().isBefore(startDate.get()))
+                throw new IllegalArgumentException("Something wrong with the requested period ('endDate' happens before 'startDate')");
             return rentalService.findAvailablePlants(plantName.get(), startDate.get(), endDate.get());
-//        } else
-//            throw new IllegalArgumentException(
-//                    String.format("Wrong number of parameters: Name='%s', Start date='%s', End date='%s'",
-//                            plantName.get(), startDate.get(), endDate.get()));
+        } else
+            throw new IllegalArgumentException(
+                    String.format("Wrong number of parameters: Name='%s', Start date='%s', End date='%s'",
+                            plantName.get(), startDate.get(), endDate.get()));
+    }
+
+    @GetMapping("/po/find/{id}")
+    public PurchaseOrderDTO findPurchaseOrder(
+        @RequestParam(name = "id", required = true) Optional<String> poId) {
+
+        if (poId.isPresent()){
+            return rentalService.findPurchaseOrder(poId.get());
+        }
+        else{
+            throw new IllegalArgumentException("Purchase order ID must be present.");
+        }
+    }
+
+    @GetMapping("/po/close/{id}")
+    public void closePurchaseOrder(
+            @RequestParam(name = "id", required = true) Optional<String> poId){
+        if (poId.isPresent()){
+            rentalService.closePurchaseOrder(poId.get());
+        }
+        else{
+            throw new IllegalArgumentException("Purchase order ID must be present.");
+        }
     }
 }
