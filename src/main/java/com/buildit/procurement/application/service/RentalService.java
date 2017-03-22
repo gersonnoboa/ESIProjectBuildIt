@@ -9,6 +9,7 @@ import com.buildit.procurement.domain.model.PlantHireRequest;
 import com.buildit.procurement.domain.model.PlantInventoryEntry;
 import com.buildit.procurement.domain.model.PurchaseOrder;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
+import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -29,38 +30,39 @@ public class RentalService {
     PlantHireRequestRepository requestRepository;
 
     @Autowired
-    PlantHireRequestAssembler plantHireRequestAssembler;
+    RequestIdentifierFactory requestIdentifierFactory;
 
-    public PlantHireRequestDTO createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
+    public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
 
         PlantInventoryEntry plant = PlantInventoryEntry.of(
                 hireRequestDTO.getPlant().getName(), hireRequestDTO.getPlant().getPlant_href());
         PurchaseOrder po = PurchaseOrder.of(hireRequestDTO.getOrder().getOrder_href());
 
-        PlantHireRequest request = new PlantHireRequest();
-        request.set_id(hireRequestDTO.get_id());
-        request.setRentalPeriod(BusinessPeriod.of(
-                hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()));
-        request.setStatus(hireRequestDTO.getStatus());
-        request.setPlant(plant);
-        request.setOrder(po);
+        PlantHireRequest request = PlantHireRequest.of(
+                requestIdentifierFactory.nextPlantHireRequestID(),
+                BusinessPeriod.of(
+                        hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()),
+                hireRequestDTO.getStatus(),
+                plant,
+                po
+                );
 
-        return plantHireRequestAssembler.toResource(requestRepository.save(request));
+        return requestRepository.save(request);
     }
 
     // procurement domain
     //---------------------------------------------------------------------------------------------------------
-    public PlantHireRequest createPlantHireRequest(String id, BusinessPeriod rentalPeriod,POStatus status,PlantInventoryEntry plant,PurchaseOrder order){
-
-        PlantHireRequest request = new PlantHireRequest();
-        request.set_id(id);
-        request.setRentalPeriod(rentalPeriod);
-        request.setStatus(status);
-        request.setPlant(plant);
-        request.setOrder(order);
-
-        return requestRepository.save(request);
-    }
+//    public PlantHireRequest createPlantHireRequest(String id, BusinessPeriod rentalPeriod,POStatus status,PlantInventoryEntry plant,PurchaseOrder order){
+//
+//        PlantHireRequest request = new PlantHireRequest();
+//        request.set_id(id);
+//        request.setRentalPeriod(rentalPeriod);
+//        request.setStatus(status);
+//        request.setPlant(plant);
+//        request.setOrder(order);
+//
+//        return requestRepository.save(request);
+//    }
 
     //---------------------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------------------------------
