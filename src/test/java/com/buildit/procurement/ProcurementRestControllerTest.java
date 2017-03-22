@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,10 +27,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -95,5 +99,33 @@ public class ProcurementRestControllerTest {
         PurchaseOrderDTO pos = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<PurchaseOrderDTO>() { });
 
         assertThat(pos.get_id()).isEqualTo(id);
+        assertThat(pos.get_id()).isNotEqualTo("2");
+        assertThat(pos.getPlant().getName()).isEqualTo("Mini excavator");
+    }
+
+    @Test
+    public void testClosePurchaseOrder() throws Exception {
+        String id = "1";
+        Mockito.doCallRealMethod().when(rentalService).closePurchaseOrder(id);
+
+        MvcResult result = mockMvc.perform(
+                get("/api/procurements/po/close?id={id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("");
+    }
+
+    @Test
+    public void testRejectPurchaseOrder() throws Exception {
+        String id = "1";
+        Mockito.doCallRealMethod().when(rentalService).rejectPurchaseOrder(id);
+
+        MvcResult result = mockMvc.perform(
+                get("/api/procurements/po/reject?id={id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("");
     }
 }
