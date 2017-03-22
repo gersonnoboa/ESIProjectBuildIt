@@ -65,4 +65,15 @@ public class ProcurementRestController {
             throw new IllegalArgumentException("Purchase order ID must be present.");
         }
     }
+
+    @GetMapping("/po/reject/{id}")
+    public void rejectPurchaseOrder(
+            @RequestParam(name = "id", required = true) Optional<String> poId){
+        if (poId.isPresent()){
+            rentalService.rejectPurchaseOrder(poId.get());
+        }
+        else{
+            throw new IllegalArgumentException("Purchase order ID must be present.");
+        }
+    }
 }
