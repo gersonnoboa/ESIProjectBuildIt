@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 @Entity
 @Data
 public class PlantHireRequest {
-    @Id @GeneratedValue
-    Long id;
+    @Id
+    String id;
 
     @Embedded
     BusinessPeriod rentalPeriod;

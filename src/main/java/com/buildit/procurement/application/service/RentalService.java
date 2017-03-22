@@ -29,7 +29,7 @@ public class RentalService {
 
     // procurement domain
     //---------------------------------------------------------------------------------------------------------
-    public PlantHireRequest createPlantHireRequest(Long id, BusinessPeriod rentalPeriod,POStatus status,PlantInventoryEntry plant,PurchaseOrder order){
+    public PlantHireRequest createPlantHireRequest(String id, BusinessPeriod rentalPeriod,POStatus status,PlantInventoryEntry plant,PurchaseOrder order){
 
         PlantHireRequest request = new PlantHireRequest();
         request.setId(id);
