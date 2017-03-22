@@ -26,6 +26,7 @@ public class ProcurementRestController {
     @Autowired
     RentalService rentalService;
 
+    //test: localhost:8090/api/procurements/plants?name=excavator&startDate=2017-01-01&endDate=2017-01-01
     @GetMapping("/plants")
     public List<PlantInventoryEntryDTO> findAvailablePlants (
             @RequestParam(name = "name", required = false) Optional<String> plantName,
@@ -43,7 +44,8 @@ public class ProcurementRestController {
                             plantName.get(), startDate.get(), endDate.get()));
     }
 
-    @GetMapping("/po/find/{id}")
+    //test:localhost:8090/api/procurements/po/find?id=1
+    @GetMapping("/po/find")
     public PurchaseOrderDTO findPurchaseOrder(
         @RequestParam(name = "id", required = true) Optional<String> poId) {
 
@@ -55,7 +57,8 @@ public class ProcurementRestController {
         }
     }
 
-    @GetMapping("/po/close/{id}")
+    //test:localhost:8090/api/procurements/po/close?id=1
+    @GetMapping("/po/close")
     public void closePurchaseOrder(
             @RequestParam(name = "id", required = true) Optional<String> poId){
         if (poId.isPresent()){
@@ -66,7 +69,8 @@ public class ProcurementRestController {
         }
     }
 
-    @GetMapping("/po/reject/{id}")
+    //test:localhost:8090/api/procurements/po/reject?id=1
+    @GetMapping("/po/reject")
     public void rejectPurchaseOrder(
             @RequestParam(name = "id", required = true) Optional<String> poId){
         if (poId.isPresent()){
