@@ -63,7 +63,7 @@ public class ProcurementRestController {
     //test:localhost:8090/api/procurements/po/close?id=1
     @GetMapping("/po/close")
     public void closePurchaseOrder(
-            @RequestParam(name = "id", required = true) Optional<String> poId){
+            @RequestParam(name = "_id", required = true) Optional<String> poId){
         if (poId.isPresent()){
             rentalService.closePurchaseOrder(poId.get());
         }
@@ -75,7 +75,7 @@ public class ProcurementRestController {
     //test:localhost:8090/api/procurements/po/reject?id=1
     @GetMapping("/po/reject")
     public void rejectPurchaseOrder(
-            @RequestParam(name = "id", required = true) Optional<String> poId){
+            @RequestParam(name = "_id", required = true) Optional<String> poId){
         if (poId.isPresent()){
             rentalService.rejectPurchaseOrder(poId.get());
         }

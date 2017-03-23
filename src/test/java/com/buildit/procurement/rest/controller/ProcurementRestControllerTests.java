@@ -1,6 +1,8 @@
 package com.buildit.procurement.rest.controller;
 
 import com.buildit.ProcurementApplication;
+import com.buildit.procurement.application.service.RentalService;
+import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -20,16 +22,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
-import com.buildit.rental.application.services.RentalService;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by Gerson Noboa on 17/3/2017.

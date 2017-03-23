@@ -10,6 +10,7 @@ import java.time.LocalDate;
  */
 @Data
 public class PlantInventoryEntryDTO extends ResourceSupport {
+    String _id;
     String name;
     LocalDate startDate;
     LocalDate endDate;
