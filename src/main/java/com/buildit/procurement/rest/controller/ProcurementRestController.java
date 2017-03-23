@@ -1,13 +1,13 @@
 package com.buildit.procurement.rest.controller;
 
+import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
+import com.buildit.procurement.application.service.PlantHireRequestAssembler;
 import com.buildit.procurement.application.service.RentalService;
+import com.buildit.procurement.domain.model.PlantHireRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +22,9 @@ public class ProcurementRestController {
 
     @Autowired
     RentalService rentalService;
+
+    @Autowired
+    PlantHireRequestAssembler plantHireRequestAssembler;
 
     @GetMapping("/plants")
     public List<PlantInventoryEntryDTO> findAvailablePlants (
@@ -38,5 +41,13 @@ public class ProcurementRestController {
 //            throw new IllegalArgumentException(
 //                    String.format("Wrong number of parameters: Name='%s', Start date='%s', End date='%s'",
 //                            plantName.get(), startDate.get(), endDate.get()));
+    }
+
+    @PostMapping("/orders")
+    public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
+        PlantHireRequestDTO request = partialDto.get();
+        System.out.println("REQUEST: " + request);
+
+        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
     }
 }
