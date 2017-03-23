@@ -1,0 +1,16 @@
+{
+  "_id":null,
+  "rentalPeriod":{
+    "startDate":[2017,4,12],
+    "endDate":[2017,4,16]
+  },
+  "status":null,
+  "plant":{
+    "_id":"2",
+    "name":"Mini excavator",
+    "plant_href":"http://localhost:8080/api/inventory/plants/2",
+    "links":[{"rel":"self","href":"http://localhost:8080/api/inventory/plants/2"}]
+  },
+  "order":null,
+  "links":[]
+}

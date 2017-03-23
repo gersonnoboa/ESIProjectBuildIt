@@ -1,14 +1,17 @@
 package com.buildit.procurement;
 
 import com.buildit.ProcurementApplication;
+import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.application.service.RentalService;
+import com.buildit.procurement.domain.model.PlantHireRequest;
 import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +33,7 @@ import java.util.List;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -123,4 +127,29 @@ public class ProcurementRestControllerTest {
 
         assertThat(result.getResponse().getContentAsString()).isEqualTo("");
     }
+
+    @Test
+    public void testCreatePlantHireRequest() throws Exception {
+
+        Resource parameter = new ClassPathResource("plant-hire-request.json", this.getClass());
+        PlantHireRequestDTO hireRequestDTO = mapper.readValue(parameter.getFile(), new TypeReference<PlantHireRequestDTO>() {
+        });
+
+        Resource requestBody = new ClassPathResource("phr-po.json", this.getClass());
+        PlantHireRequest hireRequestResponse = mapper.readValue(requestBody.getFile(), new TypeReference<PlantHireRequest>() {
+        });
+
+        when(rentalService.createPlantHireRequest(hireRequestDTO)).thenReturn(hireRequestResponse);
+
+        MvcResult result = mockMvc.perform(
+                post("/api/procurements/orders", hireRequestDTO))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        PlantHireRequestDTO phrdtoresponse = mapper.readValue(result.getResponse().getContentAsString(), PlantHireRequestDTO.class);
+        assertThat(phrdtoresponse).isNotNull();
+    }
+
+
+
 }
