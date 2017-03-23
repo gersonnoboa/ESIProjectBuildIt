@@ -2,13 +2,13 @@ package com.buildit.procurement.application.service;
 
 import com.buildit.common.domain.BusinessPeriod;
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
-import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.PlantHireRequest;
-import com.buildit.procurement.domain.model.PlantInventoryEntry;
 import com.buildit.procurement.domain.model.PurchaseOrder;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
 import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
+import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
+import com.buildit.rental.application.model.PlantInventoryEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -34,8 +34,14 @@ public class RentalService {
     public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
 
         PlantInventoryEntry plant = PlantInventoryEntry.of(
-                hireRequestDTO.getPlant().getName(), hireRequestDTO.getPlant().getPlant_href());
-        PurchaseOrderDTO poDTO = createPurchaseOrder(hireRequestDTO);
+                hireRequestDTO.getPlant().getName(),
+                hireRequestDTO.getPlant().getPlant_href());
+
+        PurchaseOrderDTO reqPoDTO = new PurchaseOrderDTO();
+        reqPoDTO.setPlant(hireRequestDTO.getPlant());
+        reqPoDTO.setRentalPeriod(hireRequestDTO.getRentalPeriod());
+
+        PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
         PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
 
         PlantHireRequest request = PlantHireRequest.of(
@@ -124,7 +130,7 @@ public class RentalService {
     }
     //---------------------------------------------------------------------------------------------------------
 
-    public PurchaseOrderDTO createPurchaseOrder(PlantHireRequestDTO requestDTO) {
+    public PurchaseOrderDTO createPurchaseOrder(PurchaseOrderDTO requestDTO) {
         PurchaseOrderDTO order =restTemplate.postForObject(
                 "http://localhost:8080/api/sales/orders/",requestDTO,PurchaseOrderDTO.class);
         return order;

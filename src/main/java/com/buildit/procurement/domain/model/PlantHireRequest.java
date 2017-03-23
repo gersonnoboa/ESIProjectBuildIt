@@ -1,13 +1,13 @@
 package com.buildit.procurement.domain.model;
 
 import com.buildit.common.domain.BusinessPeriod;
+import com.buildit.rental.application.model.PlantInventoryEntry;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * Created by Oleksandr on 3/21/2017.

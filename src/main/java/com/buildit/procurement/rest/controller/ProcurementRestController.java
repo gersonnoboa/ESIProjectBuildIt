@@ -1,7 +1,7 @@
 package com.buildit.procurement.rest.controller;
 
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
-import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
+import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.service.PlantHireRequestAssembler;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.application.service.RentalService;
