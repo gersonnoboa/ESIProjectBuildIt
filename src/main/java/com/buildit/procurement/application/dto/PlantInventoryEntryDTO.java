@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @Data
 public class PlantInventoryEntryDTO extends ResourceSupport {
+    String _id;
     String name;
     String plant_href;
 }

@@ -4,7 +4,6 @@ import com.buildit.common.domain.BusinessPeriod;
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
-import com.buildit.procurement.domain.model.POStatus;
 import com.buildit.procurement.domain.model.PlantHireRequest;
 import com.buildit.procurement.domain.model.PlantInventoryEntry;
 import com.buildit.procurement.domain.model.PurchaseOrder;
@@ -36,7 +35,8 @@ public class RentalService {
 
         PlantInventoryEntry plant = PlantInventoryEntry.of(
                 hireRequestDTO.getPlant().getName(), hireRequestDTO.getPlant().getPlant_href());
-        PurchaseOrder po = PurchaseOrder.of(hireRequestDTO.getOrder().getOrder_href());
+        PurchaseOrderDTO poDTO = createPurchaseOrder(hireRequestDTO);
+        PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
 
         PlantHireRequest request = PlantHireRequest.of(
                 requestIdentifierFactory.nextPlantHireRequestID(),
@@ -51,18 +51,6 @@ public class RentalService {
     }
 
     // procurement domain
-    //---------------------------------------------------------------------------------------------------------
-//    public PlantHireRequest createPlantHireRequest(String id, BusinessPeriod rentalPeriod,POStatus status,PlantInventoryEntry plant,PurchaseOrder order){
-//
-//        PlantHireRequest request = new PlantHireRequest();
-//        request.set_id(id);
-//        request.setRentalPeriod(rentalPeriod);
-//        request.setStatus(status);
-//        request.setPlant(plant);
-//        request.setOrder(order);
-//
-//        return requestRepository.save(request);
-//    }
 
     //---------------------------------------------------------------------------------------------------------
     //---------------------------------------------------------------------------------------------------------
@@ -135,9 +123,10 @@ public class RentalService {
         restTemplate.delete("http://localhost:8080/api/sales/orders/{id}/",id);
     }
     //---------------------------------------------------------------------------------------------------------
-    public PurchaseOrderDTO createPurchaseOrder(PurchaseOrderDTO POrder) {
+
+    public PurchaseOrderDTO createPurchaseOrder(PlantHireRequestDTO requestDTO) {
         PurchaseOrderDTO order =restTemplate.postForObject(
-                "http://localhost:8080/api/sales/orders/",POrder,PurchaseOrderDTO.class);
+                "http://localhost:8080/api/sales/orders/",requestDTO,PurchaseOrderDTO.class);
         return order;
     }
     //---------------------------------------------------------------------------------------------------------

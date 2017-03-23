@@ -44,18 +44,10 @@ public class ProcurementRestController {
     }
 
     @PostMapping("/orders")
-    public PlantHireRequestDTO createPlantHireRequest (
-            @RequestBody PlantHireRequestDTO request
-            //@RequestParam(name = "plantHireRequest", required = false) Optional<PlantHireRequestDTO> request
-    ) {
+    public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
+        PlantHireRequestDTO request = partialDto.get();
         System.out.println("REQUEST: " + request);
-        PlantHireRequestDTO requestDTO = new PlantHireRequestDTO();
-        requestDTO.set_id(request.get_id());
-        requestDTO.setRentalPeriod(request.getRentalPeriod());
-        requestDTO.setStatus(request.getStatus());
-        requestDTO.setPlant(request.getPlant());
-        requestDTO.setOrder(request.getOrder());
 
-        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(requestDTO));
+        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
     }
 }
