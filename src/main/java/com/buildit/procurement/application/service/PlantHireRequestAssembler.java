@@ -30,28 +30,6 @@ public class PlantHireRequestAssembler  extends ResourceAssemblerSupport<PlantHi
         dto.setStatus(plantHireRequest.getStatus());
         dto.setOrder(purchaseOrderAssembler.toResource(plantHireRequest.getOrder()));
 
-//        try {
-//            switch (dto.getStatus()) {
-//                case PENDING:
-//                    dto.add(new ExtendedLink(
-//                            linkTo(methodOn(ProcurementRestController.class)
-//                                    .acceptPurchaseOrder(dto.get_id())).toString(),
-//                            "accept", POST));
-//                    dto.add(new ExtendedLink(
-//                            linkTo(methodOn(ProcurementRestController.class)
-//                                    .rejectPurchaseOrder(dto.get_id())).toString(),
-//                            "reject", DELETE));
-//                    break;
-//                case OPEN:
-//                    dto.add(new ExtendedLink(
-//                            linkTo(methodOn(ProcurementRestController.class)
-//                                    .closePurchaseOrder(dto.get_id())).toString(),
-//                            "close", POST));
-//                default:
-//                    break;
-//            }
-//        } catch (Exception e) {
-//        }
         return dto;
     }
 }
