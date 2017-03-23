@@ -104,7 +104,7 @@ public class ProcurementRestControllerTest {
         Mockito.doCallRealMethod().when(rentalService).closePurchaseOrder(id);
 
         MvcResult result = mockMvc.perform(
-                get("/api/procurements/po/close?id={id}", id))
+                get("/api/procurements/po/close?_id={id}", id))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -117,7 +117,7 @@ public class ProcurementRestControllerTest {
         Mockito.doCallRealMethod().when(rentalService).rejectPurchaseOrder(id);
 
         MvcResult result = mockMvc.perform(
-                get("/api/procurements/po/reject?id={id}", id))
+                get("/api/procurements/po/reject?_id={id}", id))
                 .andExpect(status().isOk())
                 .andReturn();
 

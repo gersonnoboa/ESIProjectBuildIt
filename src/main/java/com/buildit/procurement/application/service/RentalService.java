@@ -131,6 +131,7 @@ public class RentalService {
     //---------------------------------------------------------------------------------------------------------
 
     public PurchaseOrderDTO createPurchaseOrder(PurchaseOrderDTO requestDTO) {
+        System.out.println("dto: "+requestDTO);
         PurchaseOrderDTO order =restTemplate.postForObject(
                 "http://localhost:8080/api/sales/orders/",requestDTO,PurchaseOrderDTO.class);
         return order;
