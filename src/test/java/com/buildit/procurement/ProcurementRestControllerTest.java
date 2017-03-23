@@ -2,6 +2,7 @@ package com.buildit.procurement;
 
 import com.buildit.ProcurementApplication;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
+import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.application.service.RentalService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +26,13 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -74,6 +80,52 @@ public class ProcurementRestControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        // Add test expectations
+        List<PlantInventoryEntryDTO> plants = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<PlantInventoryEntryDTO>>() { });
+
+        assertThat(plants.size()).isNotEqualTo(0);
+    }
+
+    @Test
+    public void testFindPurchaseOrder() throws Exception {
+        Resource responseBody = new ClassPathResource("purchase-order.json", this.getClass());
+        PurchaseOrderDTO list = mapper.readValue(responseBody.getFile(), new TypeReference<PurchaseOrderDTO>() { });
+        String id = "1";
+        when(rentalService.findPurchaseOrder("1")).thenReturn(list);
+        MvcResult result = mockMvc.perform(
+                get("/api/procurements/po/find?id={id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        PurchaseOrderDTO pos = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<PurchaseOrderDTO>() { });
+
+        assertThat(pos.get_id()).isEqualTo(id);
+        assertThat(pos.get_id()).isNotEqualTo("2");
+        assertThat(pos.getPlant().getName()).isEqualTo("Mini excavator");
+    }
+
+    @Test
+    public void testClosePurchaseOrder() throws Exception {
+        String id = "1";
+        Mockito.doCallRealMethod().when(rentalService).closePurchaseOrder(id);
+
+        MvcResult result = mockMvc.perform(
+                get("/api/procurements/po/close?id={id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("");
+    }
+
+    @Test
+    public void testRejectPurchaseOrder() throws Exception {
+        String id = "1";
+        Mockito.doCallRealMethod().when(rentalService).rejectPurchaseOrder(id);
+
+        MvcResult result = mockMvc.perform(
+                get("/api/procurements/po/reject?id={id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(result.getResponse().getContentAsString()).isEqualTo("");
     }
 }
