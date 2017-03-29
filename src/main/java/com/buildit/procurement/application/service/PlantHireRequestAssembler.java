@@ -17,6 +17,16 @@ public class PlantHireRequestAssembler  extends ResourceAssemblerSupport<PlantHi
     PlantInventoryEntryAssembler plantInventoryEntryAssembler;
     @Autowired
     PurchaseOrderAssembler purchaseOrderAssembler;
+    @Autowired
+    CommentAssembler commentAssembler;
+    @Autowired
+    EmployeeIdAssembler employeeIdAssembler;
+    @Autowired
+    PlantSupplierAssembler plantSupplierAssembler;
+    @Autowired
+    ConstructionSiteAssembler constructionSiteAssembler;
+
+
 
     public PlantHireRequestAssembler() {
         super(ProcurementRestController.class, PlantHireRequestDTO.class);
@@ -29,7 +39,11 @@ public class PlantHireRequestAssembler  extends ResourceAssemblerSupport<PlantHi
         dto.setRentalPeriod(BusinessPeriodDTO.of(plantHireRequest.getRentalPeriod().getStartDate(),plantHireRequest.getRentalPeriod().getEndDate()));
         dto.setStatus(plantHireRequest.getStatus());
         dto.setOrder(purchaseOrderAssembler.toResource(plantHireRequest.getOrder()));
-
+        dto.setSupplier(plantSupplierAssembler.toResource(plantHireRequest.getSupplier()));
+        dto.setSiteEngineer(employeeIdAssembler.toResource(plantHireRequest.getSiteEngineer()));
+        dto.setWorksEngineer(employeeIdAssembler.toResource(plantHireRequest.getWorksEngineer()));
+        dto.setSite(constructionSiteAssembler.toResource(plantHireRequest.getSite()));
+        dto.setComment(commentAssembler.toResource(plantHireRequest.getComment()));
         return dto;
     }
 }

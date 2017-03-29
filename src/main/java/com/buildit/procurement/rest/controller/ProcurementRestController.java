@@ -95,4 +95,15 @@ public class ProcurementRestController {
 //        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
 //    }
 //UPDATEUPDATEUPDATE
+
+    @PostMapping("/pr/{id}/accept")
+    public PlantHireRequestDTO acceptPlantHireRequest(@PathVariable String id) throws Exception {
+        return rentalService.acceptPlantHireRequest(id);
+    }
+
+    @DeleteMapping("/phr/{id}/reject")
+    public PlantHireRequestDTO rejectPlantHireRequest(@PathVariable String id) throws Exception {
+        return rentalService.rejectPlantHireRequest(id);
+    }
+
 }

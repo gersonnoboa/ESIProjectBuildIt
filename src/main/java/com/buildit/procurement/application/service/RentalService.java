@@ -31,6 +31,10 @@ public class RentalService {
     @Autowired
     RequestIdentifierFactory requestIdentifierFactory;
 
+    @Autowired
+    PlantHireRequestAssembler PHRAssembler;
+
+
 //UPDATEUPDATEUPDATE
 //    public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
 //
@@ -139,5 +143,16 @@ public class RentalService {
         return order;
     }
     //---------------------------------------------------------------------------------------------------------
+
+    public PlantHireRequestDTO acceptPlantHireRequest(String id) {
+        PlantHireRequest po = requestRepository.findOne(id);
+        po.handleAcceptance();
+        return PHRAssembler.toResource(requestRepository.save(po));
+    }
+    public PlantHireRequestDTO rejectPlantHireRequest(String id) {
+        PlantHireRequest po = requestRepository.findOne(id);
+        po.handleRejection();
+        return PHRAssembler.toResource(requestRepository.save(po));
+    }
 
 }

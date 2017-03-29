@@ -33,6 +33,9 @@ public class PlantHireRequest {
     Comment comment;
 
     @Embedded
+    ConstructionSite site;
+
+    @Embedded
     BusinessPeriod rentalPeriod;
 
     @Enumerated(EnumType.STRING)
@@ -49,4 +52,17 @@ public class PlantHireRequest {
 
 //    @Column(precision = 8, scale = 2)
 //    BigDecimal price;
+
+    public void handleRejection() {
+        status = POStatus.REJECTED;
+    }
+
+    public void handleClosure() {
+        status = POStatus.CLOSED;
+    }
+
+    public void handleAcceptance() {
+        status = POStatus.OPEN;
+    }
+
 }
