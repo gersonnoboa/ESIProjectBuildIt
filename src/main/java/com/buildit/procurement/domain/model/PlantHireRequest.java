@@ -22,6 +22,17 @@ public class PlantHireRequest {
     String _id;
 
     @Embedded
+    @AttributeOverrides({@AttributeOverride(name="employee_href", column=@Column(name="siteEngineer"))})
+    EmployeeId siteEngineer;
+
+    @Embedded
+    @AttributeOverrides({@AttributeOverride(name="employee_href", column=@Column(name="worksEngineer"))})
+    EmployeeId worksEngineer;
+
+    @Embedded
+    Comment comment;
+
+    @Embedded
     BusinessPeriod rentalPeriod;
 
     @Enumerated(EnumType.STRING)
@@ -32,6 +43,9 @@ public class PlantHireRequest {
 
     @Embedded
     PurchaseOrder order;
+
+    @Embedded
+    PlantSupplier supplier;
 
 //    @Column(precision = 8, scale = 2)
 //    BigDecimal price;

@@ -15,5 +15,4 @@ public class PlantInventoryEntryDTO extends ResourceSupport {
     LocalDate startDate;
     LocalDate endDate;
     String plant_href;
-
 }

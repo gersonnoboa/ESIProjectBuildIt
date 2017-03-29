@@ -31,30 +31,32 @@ public class RentalService {
     @Autowired
     RequestIdentifierFactory requestIdentifierFactory;
 
-    public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
-
-        PlantInventoryEntry plant = PlantInventoryEntry.of(
-                hireRequestDTO.getPlant().getName(),
-                hireRequestDTO.getPlant().getPlant_href());
-
-        PurchaseOrderDTO reqPoDTO = new PurchaseOrderDTO();
-        reqPoDTO.setPlant(hireRequestDTO.getPlant());
-        reqPoDTO.setRentalPeriod(hireRequestDTO.getRentalPeriod());
-
-        PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
-        PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
-
-        PlantHireRequest request = PlantHireRequest.of(
-                requestIdentifierFactory.nextPlantHireRequestID(),
-                BusinessPeriod.of(
-                        hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()),
-                hireRequestDTO.getStatus(),
-                plant,
-                po
-                );
-
-        return requestRepository.save(request);
-    }
+//UPDATEUPDATEUPDATE
+//    public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
+//
+//        PlantInventoryEntry plant = PlantInventoryEntry.of(
+//                hireRequestDTO.getPlant().getName(),
+//                hireRequestDTO.getPlant().getPlant_href());
+//
+//        PurchaseOrderDTO reqPoDTO = new PurchaseOrderDTO();
+//        reqPoDTO.setPlant(hireRequestDTO.getPlant());
+//        reqPoDTO.setRentalPeriod(hireRequestDTO.getRentalPeriod());
+//
+//        PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
+//        PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
+//
+//        PlantHireRequest request = PlantHireRequest.of(
+//                requestIdentifierFactory.nextPlantHireRequestID(),
+//                BusinessPeriod.of(
+//                        hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()),
+//                hireRequestDTO.getStatus(),
+//                plant,
+//                po
+//                );
+//
+//        return requestRepository.save(request);
+//    }
+//UPDATEUPDATEUPDATE
 
     // procurement domain
 

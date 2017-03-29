@@ -16,7 +16,5 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(force=true,access= AccessLevel.PRIVATE)
 @AllArgsConstructor(staticName="of")
 public class PurchaseOrder {
-
     String order_href;
-
 }
