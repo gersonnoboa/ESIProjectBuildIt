@@ -40,6 +40,7 @@ public class RentalService {
 
 
     public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
+        System.out.println("hireRequestDTO: "+hireRequestDTO);
 
         PlantInventoryEntry plant = PlantInventoryEntry.of(
                 hireRequestDTO.getPlant().getName(),
@@ -71,23 +72,16 @@ public class RentalService {
                 comment,
                 site,
                 BusinessPeriod.of(
-                        hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()),
+                        hireRequestDTO.getRentalPeriod().getStartDate(),
+                        hireRequestDTO.getRentalPeriod().getEndDate()),
                 hireRequestDTO.getStatus(),
                 plant,
                 po,
                 supplier
                 );
-
-        request = requestRepository.save(request);
-//        //try {
-        PurchaseOrderDTO purchaseOrder = rentalService.createPurchaseOrder(poDTO);
-        return requestRepository.save(request);
-        //}
-//        catch (PlantNotFoundException e){
-//            throw e;
-//        }
-
-        //return requestRepository.save(request);
+        PlantHireRequest phr = requestRepository.save(request);
+        System.out.println("phr: "+phr);
+        return phr;
     }
 
     // procurement domain

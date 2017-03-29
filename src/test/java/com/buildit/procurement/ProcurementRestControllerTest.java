@@ -1,13 +1,22 @@
 package com.buildit.procurement;
 
 import com.buildit.ProcurementApplication;
+import com.buildit.common.application.dto.BusinessPeriodDTO;
+import com.buildit.common.domain.BusinessPeriod;
+import com.buildit.procurement.application.dto.CommentDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.application.service.RentalService;
+import com.buildit.procurement.domain.model.Comment;
 import com.buildit.procurement.domain.model.PlantHireRequest;
+import com.buildit.rental.application.dto.ConstructionSiteDTO;
+import com.buildit.rental.application.dto.EmployeeIdDTO;
 import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
+import com.buildit.rental.application.dto.PlantSupplierDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONString;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,22 +24,28 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -52,6 +67,9 @@ public class ProcurementRestControllerTest {
 
     @Autowired
     RentalService rentalService;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @Configuration
     static class RentalServiceMock {
@@ -151,5 +169,73 @@ public class ProcurementRestControllerTest {
 //    }
 //UPDATEUPDATEUPDATE
 
+    @Test
+    public void testCreatePlantHireRequest() throws Exception {
+
+        Resource po = new ClassPathResource("purchase-order2.json", this.getClass());
+        PurchaseOrderDTO poDto =
+                mapper.readValue(po.getFile(), new TypeReference<PurchaseOrderDTO>() { });
+
+        //(1) querying RentIt's plant catalog
+
+        Resource responseBody = new ClassPathResource("excavators.json", this.getClass());
+        List<PlantInventoryEntryDTO> list =
+                mapper.readValue(responseBody.getFile(), new TypeReference<List<PlantInventoryEntryDTO>>() { });
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(2);
+
+        when(rentalService.findAvailablePlants("Exc", startDate, endDate)).thenReturn(list);
+        MvcResult result = mockMvc.perform(
+                get("/api/procurements/plants?name=Exc&startDate={start}&endDate={end}", startDate, endDate))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<PlantInventoryEntryDTO> plants = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<PlantInventoryEntryDTO>>() { });
+
+        System.out.println(plants);
+        assertThat(plants.size()).isNotEqualTo(0);
+        //(2) selecting one plant for creating a Plant hire request
+        PlantHireRequestDTO plantHireRequestDTO = new PlantHireRequestDTO();
+        plantHireRequestDTO.set_id("ssssss");
+
+        plantHireRequestDTO.setPlant(plants.get(0));
+
+        PlantSupplierDTO plantSupplierDTO = new PlantSupplierDTO();
+        plantSupplierDTO.setSupplier_href("http://were");
+        plantHireRequestDTO.setSupplier(plantSupplierDTO);
+
+        CommentDTO comment = new CommentDTO();
+        comment.setExplanation("llalalalalla");
+        comment.setEmployee_href("http://were");
+        plantHireRequestDTO.setComment(comment);
+
+        ConstructionSiteDTO constructionSiteDTO = new ConstructionSiteDTO();
+        constructionSiteDTO.setSite_href("http://were");
+        plantHireRequestDTO.setSite(constructionSiteDTO);
+
+        EmployeeIdDTO employeeIdDTO = new EmployeeIdDTO();
+        employeeIdDTO.setEmployee_href("http://were");
+        plantHireRequestDTO.setSiteEngineer(employeeIdDTO);
+        plantHireRequestDTO.setWorksEngineer(employeeIdDTO);
+
+        plantHireRequestDTO.setRentalPeriod(BusinessPeriodDTO.of(startDate,endDate));
+
+        when(rentalService.createPurchaseOrder(poDto)).thenReturn(poDto);
+
+        MvcResult result2 = mockMvc.perform(post("/api/procurements/phr/create/")
+                .content(mapper.writeValueAsString(plantHireRequestDTO))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+        String test = result2.getResponse().getContentAsString();
+        Assert.assertThat(test, is(notNullValue()));
+
+
+        //(3) accepting the plant hire request
+        //    (this should entail the creation of the Purchase order in RentIt's side)
+        //(4) checking the state of the Plant hire request after receiving the response from RentIt's
+        //    (it could be an acceptance or a rejection)
+
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.buildit.procurement.rest.controller;
 
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
+import com.buildit.procurement.domain.model.PlantHireRequest;
 import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.service.PlantHireRequestAssembler;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
@@ -90,8 +91,10 @@ public class ProcurementRestController {
     @PostMapping("/phr/create")
     public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
         PlantHireRequestDTO request = partialDto.get();
-        //System.out.println("REQUEST: " + request);
-        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
+        System.out.println("REQUEST: " + request);
+        PlantHireRequest phr = rentalService.createPlantHireRequest(request);
+        System.out.println("PHR: " + phr);
+        return plantHireRequestAssembler.toResource(phr);
     }
 
     @PostMapping("/pr/{id}/accept")
