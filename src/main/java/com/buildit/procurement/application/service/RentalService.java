@@ -1,10 +1,10 @@
 package com.buildit.procurement.application.service;
 
+import com.buildit.common.application.dto.exceptions.PlantNotFoundException;
 import com.buildit.common.domain.BusinessPeriod;
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
-import com.buildit.procurement.domain.model.PlantHireRequest;
-import com.buildit.procurement.domain.model.PurchaseOrder;
+import com.buildit.procurement.domain.model.*;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
 import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
 import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
@@ -34,33 +34,61 @@ public class RentalService {
     @Autowired
     PlantHireRequestAssembler PHRAssembler;
 
+    @Autowired
+    RentalService rentalService;
 
-//UPDATEUPDATEUPDATE
-//    public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
-//
-//        PlantInventoryEntry plant = PlantInventoryEntry.of(
-//                hireRequestDTO.getPlant().getName(),
-//                hireRequestDTO.getPlant().getPlant_href());
-//
-//        PurchaseOrderDTO reqPoDTO = new PurchaseOrderDTO();
-//        reqPoDTO.setPlant(hireRequestDTO.getPlant());
-//        reqPoDTO.setRentalPeriod(hireRequestDTO.getRentalPeriod());
-//
-//        PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
-//        PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
-//
-//        PlantHireRequest request = PlantHireRequest.of(
-//                requestIdentifierFactory.nextPlantHireRequestID(),
-//                BusinessPeriod.of(
-//                        hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()),
-//                hireRequestDTO.getStatus(),
-//                plant,
-//                po
-//                );
-//
-//        return requestRepository.save(request);
-//    }
-//UPDATEUPDATEUPDATE
+
+
+    public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
+
+        PlantInventoryEntry plant = PlantInventoryEntry.of(
+                hireRequestDTO.getPlant().getName(),
+                hireRequestDTO.getPlant().getPlant_href());
+
+        PlantSupplier supplier = PlantSupplier.of(
+                hireRequestDTO.getSupplier().getSupplier_href());
+
+        Comment comment = Comment.of(
+                hireRequestDTO.getComment().getExplanation(),
+                hireRequestDTO.getComment().getEmployee_href());
+
+        ConstructionSite site = ConstructionSite.of(hireRequestDTO.getSite().getSite_href());
+
+        EmployeeId siteEngineer = EmployeeId.of(hireRequestDTO.getSiteEngineer().getEmployee_href());
+        EmployeeId worksEngineer = EmployeeId.of(hireRequestDTO.getWorksEngineer().getEmployee_href());
+
+        PurchaseOrderDTO reqPoDTO = new PurchaseOrderDTO();
+        reqPoDTO.setPlant(hireRequestDTO.getPlant());
+        reqPoDTO.setRentalPeriod(hireRequestDTO.getRentalPeriod());
+
+        PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
+        PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
+
+        PlantHireRequest request = PlantHireRequest.of(
+                requestIdentifierFactory.nextPlantHireRequestID(),
+                siteEngineer,
+                worksEngineer,
+                comment,
+                site,
+                BusinessPeriod.of(
+                        hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()),
+                hireRequestDTO.getStatus(),
+                plant,
+                po,
+                supplier
+                );
+
+        request = requestRepository.save(request);
+//        //try {
+        PurchaseOrderDTO purchaseOrder = rentalService.createPurchaseOrder(poDTO);
+        return requestRepository.save(request);
+        //}
+//        catch (PlantNotFoundException e){
+//            throw e;
+//        }
+
+        //return requestRepository.save(request);
+    }
 
     // procurement domain
 
@@ -149,6 +177,8 @@ public class RentalService {
         po.handleAcceptance();
         return PHRAssembler.toResource(requestRepository.save(po));
     }
+
+
     public PlantHireRequestDTO rejectPlantHireRequest(String id) {
         PlantHireRequest po = requestRepository.findOne(id);
         po.handleRejection();
