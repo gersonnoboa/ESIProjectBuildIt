@@ -195,6 +195,9 @@ public class ProcurementRestControllerTest {
         System.out.println(plants);
         assertThat(plants.size()).isNotEqualTo(0);
         //(2) selecting one plant for creating a Plant hire request
+        //(3) accepting the plant hire request
+        //    (this should entail the creation of the Purchase order in RentIt's side)
+
         PlantHireRequestDTO plantHireRequestDTO = new PlantHireRequestDTO();
         plantHireRequestDTO.set_id("ssssss");
 
@@ -230,11 +233,12 @@ public class ProcurementRestControllerTest {
         String test = result2.getResponse().getContentAsString();
         Assert.assertThat(test, is(notNullValue()));
 
-
-        //(3) accepting the plant hire request
-        //    (this should entail the creation of the Purchase order in RentIt's side)
         //(4) checking the state of the Plant hire request after receiving the response from RentIt's
         //    (it could be an acceptance or a rejection)
+        MvcResult result3 = mockMvc.perform(
+                get("/api/procurements/phr/{ssssss}/accept"))
+                .andExpect(status().isOk())
+                .andReturn();
 
     }
 
