@@ -17,7 +17,5 @@ import javax.persistence.Embedded;
 @AllArgsConstructor(staticName="of")
 public class Comment {
     String explanation;
-
-    @Embedded
-    EmployeeId employee;
+    String employee_href;
 }

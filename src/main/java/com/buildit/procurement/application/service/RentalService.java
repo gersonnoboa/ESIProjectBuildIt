@@ -31,7 +31,6 @@ public class RentalService {
     @Autowired
     RequestIdentifierFactory requestIdentifierFactory;
 
-<<<<<<< HEAD
     @Autowired
     PlantHireRequestAssembler PHRAssembler;
 

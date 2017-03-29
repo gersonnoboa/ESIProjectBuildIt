@@ -10,5 +10,5 @@ import lombok.Data;
 @Data
 public class CommentDTO extends ResourceSupport {
     String explanation;
-    EmployeeIdDTO employee;
+    String employee_href;
 }
