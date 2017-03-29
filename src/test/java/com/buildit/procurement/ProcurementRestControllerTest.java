@@ -127,29 +127,29 @@ public class ProcurementRestControllerTest {
 
         assertThat(result.getResponse().getContentAsString()).isEqualTo("");
     }
-
-    @Test
-    public void testCreatePlantHireRequest() throws Exception {
-
-        Resource parameter = new ClassPathResource("plant-hire-request.json", this.getClass());
-        PlantHireRequestDTO hireRequestDTO = mapper.readValue(parameter.getFile(), new TypeReference<PlantHireRequestDTO>() {
-        });
-
-        Resource requestBody = new ClassPathResource("phr-po.json", this.getClass());
-        PlantHireRequest hireRequestResponse = mapper.readValue(requestBody.getFile(), new TypeReference<PlantHireRequest>() {
-        });
-
-        when(rentalService.createPlantHireRequest(hireRequestDTO)).thenReturn(hireRequestResponse);
-
-        MvcResult result = mockMvc.perform(
-                post("/api/procurements/orders", hireRequestDTO))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        PlantHireRequestDTO phrdtoresponse = mapper.readValue(result.getResponse().getContentAsString(), PlantHireRequestDTO.class);
-        assertThat(phrdtoresponse).isNotNull();
-    }
-
+//UPDATEUPDATEUPDATE
+//    @Test
+//    public void testCreatePlantHireRequest() throws Exception {
+//
+//        Resource parameter = new ClassPathResource("plant-hire-request.json", this.getClass());
+//        PlantHireRequestDTO hireRequestDTO = mapper.readValue(parameter.getFile(), new TypeReference<PlantHireRequestDTO>() {
+//        });
+//
+//        Resource requestBody = new ClassPathResource("phr-po.json", this.getClass());
+//        PlantHireRequest hireRequestResponse = mapper.readValue(requestBody.getFile(), new TypeReference<PlantHireRequest>() {
+//        });
+//
+//        when(rentalService.createPlantHireRequest(hireRequestDTO)).thenReturn(hireRequestResponse);
+//
+//        MvcResult result = mockMvc.perform(
+//                post("/api/procurements/orders", hireRequestDTO))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        PlantHireRequestDTO phrdtoresponse = mapper.readValue(result.getResponse().getContentAsString(), PlantHireRequestDTO.class);
+//        assertThat(phrdtoresponse).isNotNull();
+//    }
+//UPDATEUPDATEUPDATE
 
 
 }

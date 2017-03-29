@@ -6,15 +6,18 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 /**
- * Created by Oleksandr on 3/21/2017.
+ * Created by Oleksandr on 3/29/2017.
  */
-
 @Embeddable
 @Value
 @NoArgsConstructor(force=true,access= AccessLevel.PRIVATE)
 @AllArgsConstructor(staticName="of")
-public class PurchaseOrder {
-    String order_href;
+public class Comment {
+    String explanation;
+
+    @Embedded
+    EmployeeId employee;
 }

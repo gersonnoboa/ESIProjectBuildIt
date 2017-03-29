@@ -85,11 +85,14 @@ public class ProcurementRestController {
     }
 
     //test:localhost:8090/api/procurements/po/orders
-    @PostMapping("/orders")
-    public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
-        PlantHireRequestDTO request = partialDto.get();
-        //System.out.println("REQUEST: " + request);
 
-        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
-    }
+//UPDATEUPDATEUPDATE
+//    @PostMapping("/orders")
+//    public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
+//        PlantHireRequestDTO request = partialDto.get();
+//        //System.out.println("REQUEST: " + request);
+//
+//        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
+//    }
+//UPDATEUPDATEUPDATE
 }
