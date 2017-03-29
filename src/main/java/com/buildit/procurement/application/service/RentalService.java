@@ -173,16 +173,16 @@ public class RentalService {
     //---------------------------------------------------------------------------------------------------------
 
     public PlantHireRequestDTO acceptPlantHireRequest(String id) {
-        PlantHireRequest po = requestRepository.findOne(id);
-        po.handleAcceptance();
-        return PHRAssembler.toResource(requestRepository.save(po));
+        PlantHireRequest phr = requestRepository.findOne(id);
+        phr.handleAcceptance();
+        return PHRAssembler.toResource(requestRepository.save(phr));
     }
 
 
     public PlantHireRequestDTO rejectPlantHireRequest(String id) {
-        PlantHireRequest po = requestRepository.findOne(id);
-        po.handleRejection();
-        return PHRAssembler.toResource(requestRepository.save(po));
+        PlantHireRequest phr = requestRepository.findOne(id);
+        phr.handleRejection();
+        return PHRAssembler.toResource(requestRepository.save(phr));
     }
 
 }
