@@ -176,29 +176,29 @@ public class RentalService {
     //---------------------------------------------------------------------------------------------------------
 
     public PlantHireRequestDTO acceptPlantHireRequest(String id) {
-        PlantHireRequest po = requestRepository.findOne(id);
-        po.handleAcceptance();
-        return PHRAssembler.toResource(requestRepository.save(po));
+        PlantHireRequest phr = requestRepository.findOne(id);
+        phr.handleAcceptance();
+        return PHRAssembler.toResource(requestRepository.save(phr));
     }
 
 
     public PlantHireRequestDTO rejectPlantHireRequest(String id) {
-        PlantHireRequest po = requestRepository.findOne(id);
-        po.handleRejection();
-        return PHRAssembler.toResource(requestRepository.save(po));
+        PlantHireRequest phr = requestRepository.findOne(id);
+        phr.handleRejection();
+        return PHRAssembler.toResource(requestRepository.save(phr));
     }
 
     public PlantHireRequestDTO closePlantHireRequest(String id){
-        PlantHireRequest po = requestRepository.findOne(id);
-        po.handleClosure();
-        return PHRAssembler.toResource(requestRepository.save(po));
+        PlantHireRequest phr = requestRepository.findOne(id);
+        phr.handleClosure();
+        return PHRAssembler.toResource(requestRepository.save(phr));
     }
 
     public PlantHireRequestDTO updatePlantHireRequest(PlantHireRequestUpdateDTO newPhr){
-        PlantHireRequest po = requestRepository.findOne(newPhr.get_id());
+        PlantHireRequest phr = requestRepository.findOne(newPhr.get_id());
         PlantHireRequestUpdate update = plantHireRequestUpdateAssembler.toResource(newPhr);
-        po.handleUpdate(update);
-        return PHRAssembler.toResource((requestRepository.save(po)));
+        phr.handleUpdate(update);
+        return PHRAssembler.toResource((requestRepository.save(phr)));
     }
 
 
