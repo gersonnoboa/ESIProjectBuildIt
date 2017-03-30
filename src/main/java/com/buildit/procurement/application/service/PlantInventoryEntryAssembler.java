@@ -23,4 +23,10 @@ public class PlantInventoryEntryAssembler extends ResourceAssemblerSupport<Plant
 
         return dto;
     }
+
+    public PlantInventoryEntry toResource(PlantInventoryEntryDTO plant){
+        PlantInventoryEntry entry = PlantInventoryEntry.of(plant.getName(), plant.getPlant_href());
+        return entry;
+    }
+
 }

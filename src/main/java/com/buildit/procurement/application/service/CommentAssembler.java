@@ -28,4 +28,9 @@ public class CommentAssembler extends ResourceAssemblerSupport<Comment,CommentDT
         //dto.setEmployee(employeeIdAssembler.toResource(comment.getEmployee()));
         return dto;
     }
+
+    public Comment toResource(CommentDTO comment){
+        Comment model = Comment.of(comment.getExplanation(), comment.getEmployee_href());
+        return model;
+    }
 }

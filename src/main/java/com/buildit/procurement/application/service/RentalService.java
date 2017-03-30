@@ -3,12 +3,14 @@ package com.buildit.procurement.application.service;
 import com.buildit.common.application.dto.exceptions.PlantNotFoundException;
 import com.buildit.common.domain.BusinessPeriod;
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
+import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.*;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
 import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
 import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import com.buildit.rental.application.model.PlantInventoryEntry;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -37,7 +39,8 @@ public class RentalService {
     @Autowired
     RentalService rentalService;
 
-
+    @Autowired
+    PlantHireRequestUpdateAssembler plantHireRequestUpdateAssembler;
 
     public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
 
@@ -184,5 +187,19 @@ public class RentalService {
         po.handleRejection();
         return PHRAssembler.toResource(requestRepository.save(po));
     }
+
+    public PlantHireRequestDTO closePlantHireRequest(String id){
+        PlantHireRequest po = requestRepository.findOne(id);
+        po.handleClosure();
+        return PHRAssembler.toResource(requestRepository.save(po));
+    }
+
+    public PlantHireRequestDTO updatePlantHireRequest(PlantHireRequestUpdateDTO newPhr){
+        PlantHireRequest po = requestRepository.findOne(newPhr.get_id());
+        PlantHireRequestUpdate update = plantHireRequestUpdateAssembler.toResource(newPhr);
+        po.handleUpdate(update);
+        return PHRAssembler.toResource((requestRepository.save(po)));
+    }
+
 
 }

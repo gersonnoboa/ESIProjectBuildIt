@@ -1,6 +1,7 @@
 package com.buildit.procurement.rest.controller;
 
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
+import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
 import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.service.PlantHireRequestAssembler;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -86,17 +88,15 @@ public class ProcurementRestController {
 
     //test:localhost:8090/api/procurements/po/orders
 
-//UPDATEUPDATEUPDATE
-//    @PostMapping("/orders")
-//    public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
-//        PlantHireRequestDTO request = partialDto.get();
-//        //System.out.println("REQUEST: " + request);
-//
-//        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
-//    }
-//UPDATEUPDATEUPDATE
+    @PostMapping("/phr/create")
+    public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
+        PlantHireRequestDTO request = partialDto.get();
+        //System.out.println("REQUEST: " + request);
 
-    @PostMapping("/pr/{id}/accept")
+        return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
+    }
+
+    @PostMapping("/phr/{id}")
     public PlantHireRequestDTO acceptPlantHireRequest(@PathVariable String id) throws Exception {
         return rentalService.acceptPlantHireRequest(id);
     }
@@ -104,6 +104,16 @@ public class ProcurementRestController {
     @DeleteMapping("/phr/{id}/reject")
     public PlantHireRequestDTO rejectPlantHireRequest(@PathVariable String id) throws Exception {
         return rentalService.rejectPlantHireRequest(id);
+    }
+
+    @PutMapping("/phr/{id}")
+    public PlantHireRequestDTO updatePlantHireRequest(@RequestBody Optional<PlantHireRequestUpdateDTO> partialDto){
+        return rentalService.updatePlantHireRequest(partialDto.get());
+    }
+
+    @DeleteMapping("/phr/{id}")
+    public PlantHireRequestDTO closePlantHireRequest(@PathVariable String id){
+        return rentalService.closePlantHireRequest(id);
     }
 
 }
