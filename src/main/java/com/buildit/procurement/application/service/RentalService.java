@@ -75,7 +75,7 @@ public class RentalService {
                 site,
                 BusinessPeriod.of(
                         hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()),
-                hireRequestDTO.getStatus(),
+                POStatus.PENDING,
                 plant,
                 po,
                 supplier
