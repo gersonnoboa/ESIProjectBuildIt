@@ -1,0 +1,30 @@
+{
+  "_id": "4f3ca857-e2d0-4099-a91a-243bbc8ed52e",
+  "rentalPeriod": {
+    "startDate": "2017-04-12",
+    "endDate": "2017-04-16"
+  },
+  "status": null,
+  "plant": {
+    "_id": null,
+    "name": "Mini excavator",
+    "startDate": null,
+    "endDate": null,
+    "plant_href": "http://localhost:8080/api/inventory/plants/2"
+  },
+  "order": {
+    "_id": null,
+    "plant": null,
+    "rentalPeriod": null,
+    "total": null,
+    "status": null,
+    "order_href": "http://localhost:8080/api/sales/orders/fe936fdb-fbc1-4a96-a03b-2eca419f0ab1",
+    "_xlinks": []
+  },
+  "_links": {
+    "self": {
+      "href": "http://localhost:8090/api/procurements/4f3ca857-e2d0-4099-a91a-243bbc8ed52e"
+    }
+  },
+  "_xlinks": []
+}

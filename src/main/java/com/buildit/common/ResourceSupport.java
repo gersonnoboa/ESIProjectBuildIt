@@ -1,4 +1,4 @@
-package com.buildit.common.rest;
+package com.buildit.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.Link;
