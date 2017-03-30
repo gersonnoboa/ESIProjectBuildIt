@@ -43,7 +43,7 @@ public class RentalService {
     PlantHireRequestUpdateAssembler plantHireRequestUpdateAssembler;
 
     public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
-
+        System.out.println("CREATE: " + hireRequestDTO);
         PlantInventoryEntry plant = PlantInventoryEntry.of(
                 hireRequestDTO.getPlant().getName(),
                 hireRequestDTO.getPlant().getPlant_href());
@@ -81,16 +81,7 @@ public class RentalService {
                 supplier
                 );
 
-        request = requestRepository.save(request);
-//        //try {
-        PurchaseOrderDTO purchaseOrder = rentalService.createPurchaseOrder(poDTO);
         return requestRepository.save(request);
-        //}
-//        catch (PlantNotFoundException e){
-//            throw e;
-//        }
-
-        //return requestRepository.save(request);
     }
 
     // procurement domain
