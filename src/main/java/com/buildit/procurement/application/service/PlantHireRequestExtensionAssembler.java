@@ -1,0 +1,35 @@
+package com.buildit.procurement.application.service;
+
+import com.buildit.procurement.application.dto.PlantHireRequestExtensionDTO;
+import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
+import com.buildit.procurement.domain.model.PlantHireRequestExtension;
+import com.buildit.procurement.rest.controller.ProcurementRestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by Gerson Noboa on 30/3/2017.
+ */
+
+@Service
+public class PlantHireRequestExtensionAssembler extends ResourceAssemblerSupport<PlantHireRequestExtension, PlantHireRequestExtensionDTO> {
+
+    @Autowired
+    CommentAssembler commentAssembler;
+
+    @Autowired
+    PlantInventoryEntryAssembler plantInventoryEntryAssembler;
+
+    public PlantHireRequestExtensionAssembler() {
+        super(ProcurementRestController.class, PlantHireRequestExtensionDTO.class);
+    }
+
+    public PlantHireRequestExtensionDTO toResource(PlantHireRequestExtension extension){
+        PlantHireRequestExtensionDTO dto = new PlantHireRequestExtensionDTO();
+        dto.set_id(extension.getId());
+        dto.setRentalPeriod(extension.getRentalPeriod());
+        dto.setPurchaseOrder(extension.getPurchaseOrder());
+        return dto;
+    }
+}

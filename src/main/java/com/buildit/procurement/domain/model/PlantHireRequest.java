@@ -1,8 +1,6 @@
 package com.buildit.procurement.domain.model;
 
 import com.buildit.common.domain.BusinessPeriod;
-import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
-import com.buildit.procurement.application.service.CommentAssembler;
 import com.buildit.rental.application.model.PlantInventoryEntry;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 /**
  * Created by Oleksandr on 3/21/2017.
@@ -72,5 +69,10 @@ public class PlantHireRequest {
         this.comment = newPhr.getComment();
         this.rentalPeriod = newPhr.getRentalPeriod();
         this.plant = newPhr.getPlant();
+    }
+
+    public void handleExtension(PlantHireRequest newPhr) {
+        this.rentalPeriod = newPhr.getRentalPeriod();
+        this.order = newPhr.getOrder();
     }
 }

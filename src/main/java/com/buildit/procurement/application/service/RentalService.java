@@ -1,8 +1,8 @@
 package com.buildit.procurement.application.service;
 
-import com.buildit.common.application.dto.exceptions.PlantNotFoundException;
 import com.buildit.common.domain.BusinessPeriod;
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
+import com.buildit.procurement.application.dto.PlantHireRequestExtensionDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.*;
@@ -10,7 +10,6 @@ import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
 import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
 import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import com.buildit.rental.application.model.PlantInventoryEntry;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -192,5 +191,18 @@ public class RentalService {
         return PHRAssembler.toResource((requestRepository.save(phr)));
     }
 
-
+    public PlantHireRequestDTO extendPlantHireRequest(PlantHireRequestExtensionDTO newPhr) {
+        BusinessPeriod period = BusinessPeriod.of(
+                newPhr.getRentalPeriod().getStartDate(),newPhr.getRentalPeriod().getEndDate());
+        PurchaseOrderDTO order =restTemplate.getForObject(
+                newPhr.getPurchaseOrder().getOrder_href(),PurchaseOrderDTO.class);
+        order.setRentalPeriod(newPhr.getRentalPeriod());
+        PurchaseOrderDTO extendedPO =restTemplate.patchForObject(
+                "http://localhost:8080/api/sales/orders/{id}/extensions",order,PurchaseOrderDTO.class);
+        PlantHireRequest phr = requestRepository.findOne(newPhr.get_id());
+        phr.setOrder(PurchaseOrder.of(extendedPO.getOrder_href()));
+        phr.setRentalPeriod(period);
+        phr.handleExtension(phr);
+        return PHRAssembler.toResource((requestRepository.save(phr)));
+    }
 }

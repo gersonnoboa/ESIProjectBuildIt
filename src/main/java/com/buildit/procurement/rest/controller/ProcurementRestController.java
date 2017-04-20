@@ -1,8 +1,10 @@
 package com.buildit.procurement.rest.controller;
 
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
+import com.buildit.procurement.application.dto.PlantHireRequestExtensionDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
 import com.buildit.procurement.domain.model.PlantHireRequest;
+import com.buildit.procurement.domain.model.PlantHireRequestExtension;
 import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.service.PlantHireRequestAssembler;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
@@ -108,7 +110,7 @@ public class ProcurementRestController {
         return rentalService.rejectPlantHireRequest(id);
     }
 
-    @PutMapping("/phr/{id}")
+    @PatchMapping("/phr/{id}")
     public PlantHireRequestDTO updatePlantHireRequest(@RequestBody Optional<PlantHireRequestUpdateDTO> partialDto){
         return rentalService.updatePlantHireRequest(partialDto.get());
     }
@@ -116,6 +118,11 @@ public class ProcurementRestController {
     @DeleteMapping("/phr/{id}")
     public PlantHireRequestDTO closePlantHireRequest(@PathVariable String id){
         return rentalService.closePlantHireRequest(id);
+    }
+
+    @PatchMapping("/phr/{id}/extensions")
+    public PlantHireRequestDTO extendPlantHireRequest(@RequestBody Optional<PlantHireRequestExtensionDTO> partialDto){
+        return rentalService.extendPlantHireRequest(partialDto.get());
     }
 
 }
