@@ -16,6 +16,6 @@ public class PlantHireRequestExtensionDTO extends ResourceSupport {
 
     String _id;
     BusinessPeriodDTO rentalPeriod;
-    PurchaseOrderDTO purchaseOrder;
+    PurchaseOrderDTO order;
 
 }

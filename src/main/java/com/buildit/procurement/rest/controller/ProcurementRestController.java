@@ -122,6 +122,7 @@ public class ProcurementRestController {
 
     @PatchMapping("/phr/{id}/extensions")
     public PlantHireRequestDTO extendPlantHireRequest(@RequestBody Optional<PlantHireRequestExtensionDTO> partialDto){
+        System.out.println(partialDto.get());
         return rentalService.extendPlantHireRequest(partialDto.get());
     }
 

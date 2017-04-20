@@ -195,7 +195,7 @@ public class RentalService {
         BusinessPeriod period = BusinessPeriod.of(
                 newPhr.getRentalPeriod().getStartDate(),newPhr.getRentalPeriod().getEndDate());
         PurchaseOrderDTO order =restTemplate.getForObject(
-                newPhr.getPurchaseOrder().getOrder_href(),PurchaseOrderDTO.class);
+                newPhr.getOrder().getOrder_href(),PurchaseOrderDTO.class);
         order.setRentalPeriod(newPhr.getRentalPeriod());
         PurchaseOrderDTO extendedPO =restTemplate.patchForObject(
                 "http://localhost:8080/api/sales/orders/{id}/extensions",order,PurchaseOrderDTO.class);

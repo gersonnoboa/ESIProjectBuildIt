@@ -13,5 +13,5 @@ public class PlantHireRequestExtension {
 
     String id;
     BusinessPeriod rentalPeriod;
-    PurchaseOrder purchaseOrder;
+    PurchaseOrder order;
 }

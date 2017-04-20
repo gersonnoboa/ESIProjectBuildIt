@@ -34,8 +34,8 @@ public class PlantHireRequestExtensionAssembler extends ResourceAssemblerSupport
         dto.setRentalPeriod(periodDTO);
         PurchaseOrderDTO poDto = new PurchaseOrderDTO();
         poDto.setRentalPeriod(periodDTO);
-        poDto.setOrder_href(extension.getPurchaseOrder().getOrder_href());
-        dto.setPurchaseOrder(poDto);
+        poDto.setOrder_href(extension.getOrder().getOrder_href());
+        dto.setOrder(poDto);
         return dto;
     }
 }
