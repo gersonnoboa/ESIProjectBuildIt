@@ -1,7 +1,9 @@
 package com.buildit.procurement.application.service;
 
+import com.buildit.common.application.dto.BusinessPeriodDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestExtensionDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
+import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.PlantHireRequestExtension;
 import com.buildit.procurement.rest.controller.ProcurementRestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,12 @@ public class PlantHireRequestExtensionAssembler extends ResourceAssemblerSupport
     public PlantHireRequestExtensionDTO toResource(PlantHireRequestExtension extension){
         PlantHireRequestExtensionDTO dto = new PlantHireRequestExtensionDTO();
         dto.set_id(extension.getId());
-        dto.setRentalPeriod(extension.getRentalPeriod());
-        dto.setPurchaseOrder(extension.getPurchaseOrder());
+        BusinessPeriodDTO periodDTO = BusinessPeriodDTO.of(extension.getRentalPeriod().getStartDate(),extension.getRentalPeriod().getEndDate());
+        dto.setRentalPeriod(periodDTO);
+        PurchaseOrderDTO poDto = new PurchaseOrderDTO();
+        poDto.setRentalPeriod(periodDTO);
+        poDto.setOrder_href(extension.getPurchaseOrder().getOrder_href());
+        dto.setPurchaseOrder(poDto);
         return dto;
     }
 }
