@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * Created by Oleksandr on 3/21/2017.
@@ -50,8 +51,8 @@ public class PlantHireRequest {
     @Embedded
     PlantSupplier supplier;
 
-//    @Column(precision = 8, scale = 2)
-//    BigDecimal price;
+    @Column(precision = 8, scale = 2)
+    BigDecimal price;
 
     public void handleRejection() {
         status = POStatus.REJECTED;

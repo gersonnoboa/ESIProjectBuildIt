@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -77,7 +78,8 @@ public class RentalService {
                 POStatus.PENDING,
                 plant,
                 po,
-                supplier
+                supplier,
+                BigDecimal.valueOf(100)
                 );
 
         return requestRepository.save(request);

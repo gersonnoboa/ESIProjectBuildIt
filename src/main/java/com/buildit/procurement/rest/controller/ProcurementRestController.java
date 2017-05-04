@@ -1,5 +1,6 @@
 package com.buildit.procurement.rest.controller;
 
+import com.buildit.common.integration.MailIntegration;
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestExtensionDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
@@ -24,6 +25,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/procurements")
 public class ProcurementRestController {
+
+    @Autowired
+    MailIntegration mailIntegration;
 
     @Autowired
     RentalService rentalService;
@@ -97,6 +101,15 @@ public class ProcurementRestController {
         System.out.println("REQUEST: " + request);
         PlantHireRequest dto = rentalService.createPlantHireRequest(request);
         System.out.println("PHR: " + dto);
+
+        try {
+            mailIntegration.sendMail("esi2017.g17@gmail.com", dto);
+        }
+        catch (Exception e){
+            System.err.println("Error");
+        }
+
+
         return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
     }
 
