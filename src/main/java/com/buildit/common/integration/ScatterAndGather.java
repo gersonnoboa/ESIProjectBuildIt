@@ -34,7 +34,7 @@ class InvoiceProcessor {
 @Configuration
 public class ScatterAndGather {
 
-    @Bean
+    /*@Bean
     IntegrationFlow inboundHttpGateway() {
         return IntegrationFlows.from(
                 Http.inboundChannelAdapter("/api/invoicing/invoices")
@@ -61,6 +61,14 @@ public class ScatterAndGather {
                 .get();
     }
 
+    @Bean
+    IntegrationFlow fastTrack() {
+        return IntegrationFlows.from("fasttrack-channel")
+                .handle(System.err::println)
+                .get();
+    }
+
+*/
 
     @Value("${gmail.username}")
     String gmailUsername;
@@ -80,10 +88,5 @@ public class ScatterAndGather {
                 .get();
     }
 
-    @Bean
-    IntegrationFlow fastTrack() {
-        return IntegrationFlows.from("fasttrack-channel")
-                .handle(System.err::println)
-                .get();
-    }
+
 }

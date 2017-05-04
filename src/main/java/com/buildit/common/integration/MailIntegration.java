@@ -71,9 +71,9 @@ public class MailIntegration {
         helper.setFrom(gmailUsername); // Add the actual email addresses
         helper.setTo(toEmail);   // (also here)
         helper.setSubject("Invoice Purchase Order " + phr.get_id()); // Check the spelling the subject
-        helper.setText("Dear customer,\n\nPlease find attached the Invoice corresponding to your Purchase Order.\n\nKindly yours,\n\nRentIt Team!");
+        helper.setText("Dear customer,\n\nPlease find attached the Invoice corresponding to your Purchase Order.\n\nKindly yours,\n\nBuildIt Team!");
 
-        //helper.addAttachment("invoice-po-123.json", new ByteArrayDataSource(invoice1, "application/json"));
+        helper.addAttachment("remittance.json", new ByteArrayDataSource(invoice1, "application/json"));
 
 // I am Assuming "invoicingGateway" is an autowired reference to a spring bean
 // associated with "InvoicingGateway"
