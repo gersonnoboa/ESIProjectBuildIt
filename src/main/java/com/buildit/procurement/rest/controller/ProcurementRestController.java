@@ -24,6 +24,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/procurements")
+@CrossOrigin
 public class ProcurementRestController {
 
     @Autowired

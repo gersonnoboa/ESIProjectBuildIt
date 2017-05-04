@@ -61,11 +61,14 @@ public class RentalService {
         EmployeeId worksEngineer = EmployeeId.of(hireRequestDTO.getWorksEngineer().getEmployee_href());
 
         PurchaseOrderDTO reqPoDTO = new PurchaseOrderDTO();
+        reqPoDTO.set_id("1");
         reqPoDTO.setPlant(hireRequestDTO.getPlant());
         reqPoDTO.setRentalPeriod(hireRequestDTO.getRentalPeriod());
+        reqPoDTO.setOrder_href("to");
 
         PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
-        PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
+        //PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
+        PurchaseOrder po = PurchaseOrder.of("http://localhost:8080/api/inventory/plants/1");
 
         PlantHireRequest request = PlantHireRequest.of(
                 requestIdentifierFactory.nextPlantHireRequestID(),
@@ -161,9 +164,12 @@ public class RentalService {
 
     public PurchaseOrderDTO createPurchaseOrder(PurchaseOrderDTO requestDTO) {
         System.out.println("dto: "+requestDTO);
-        PurchaseOrderDTO order =restTemplate.postForObject(
-                "http://localhost:8080/api/sales/orders/",requestDTO,PurchaseOrderDTO.class);
-        return order;
+        //PurchaseOrderDTO order =restTemplate.postForObject("http://localhost:8080/api/sales/orders/",requestDTO,PurchaseOrderDTO.class);
+
+        PurchaseOrderDTO order = new PurchaseOrderDTO();
+        order.set_id("1");
+        order.setOrder_href("");
+        return requestDTO;
     }
     //---------------------------------------------------------------------------------------------------------
 
