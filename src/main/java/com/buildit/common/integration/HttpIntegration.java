@@ -23,8 +23,7 @@ public class HttpIntegration {
     @Bean
     IntegrationFlow inboundHttp() {
         return IntegrationFlows.from(
-                Http.inboundChannelAdapter("/api/invoicing/invoices")
-                        .requestPayloadType(InvoiceDTO.class))
+                Http.inboundChannelAdapter("/api/invoicing/invoices").requestPayloadType(InvoiceDTO.class))
                 .handle("invoicingService", "processInvoice")
                 .get();
     }
