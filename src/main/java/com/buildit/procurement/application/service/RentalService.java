@@ -8,25 +8,18 @@ import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.*;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
 import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
-import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
-import com.buildit.rental.application.model.PlantInventoryEntry;
-import org.apache.tomcat.util.codec.binary.Base64;
+import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
+import com.buildit.procurement.domain.model.PlantInventoryEntry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.sun.scenario.Settings.set;
 
 /**
  * Created by gkgranada on 17/03/2017.
@@ -111,11 +104,15 @@ public class RentalService {
     // inventory domain
     public List<PlantInventoryEntryDTO> findAvailablePlants(String plantName, LocalDate startDate, LocalDate endDate) {
         runInterceptors();
-        ResponseEntity<PlantInventoryEntryDTO[]> response = restTemplate.exchange(
-                "http://localhost:8080/api/inventory/plants?name={name}&startDate={start}&endDate={end}",
-                HttpMethod.GET, null, PlantInventoryEntryDTO[].class, plantName, startDate, endDate);
 
-        PlantInventoryEntryDTO[] plants = response.getBody();
+        PlantInventoryEntryDTO[] plants = restTemplate.getForObject(
+                "http://localhost:8080/api/inventory/plants?name={name}&startDate={start}&endDate={end}",
+                PlantInventoryEntryDTO[].class, plantName, startDate, endDate);
+        System.out.println("Plants: " + Arrays.asList(plants));
+
+        for (PlantInventoryEntryDTO plant : plants) {
+            plant.setPlant_href(plant.getId().getHref());
+        }
 
         return Arrays.asList(plants);
     }
@@ -124,12 +121,8 @@ public class RentalService {
 
     public PlantInventoryEntryDTO findPlant(String id) {
         runInterceptors();
-        ResponseEntity<PlantInventoryEntryDTO> response = restTemplate.exchange(
-                "http://localhost:8080/api/inventory/plants/{id}",
-                HttpMethod.GET, null, PlantInventoryEntryDTO.class, id);
-
-        PlantInventoryEntryDTO plant = response.getBody();
-
+        PlantInventoryEntryDTO plant = restTemplate.getForObject(
+                "http://localhost:8080/api/inventory/plants/{id}", PlantInventoryEntryDTO.class, id);
         return plant;
     }
 
@@ -140,11 +133,8 @@ public class RentalService {
     // sales domain
     public PurchaseOrderDTO findPurchaseOrder(String id) {
         runInterceptors();
-        ResponseEntity<PurchaseOrderDTO> response = restTemplate.exchange(
-                "http://localhost:8080/api/sales/orders/{id}",
-                HttpMethod.GET, null, PurchaseOrderDTO.class, id);
-
-        PurchaseOrderDTO order = response.getBody();
+        PurchaseOrderDTO order =restTemplate.getForObject(
+                "http://localhost:8080/api/sales/orders/{id}", PurchaseOrderDTO.class, id);
         return order;
     }
 
@@ -152,11 +142,9 @@ public class RentalService {
 
     public List<PurchaseOrderDTO> findAll(){
         runInterceptors();
-        ResponseEntity<PurchaseOrderDTO[]> response = restTemplate.exchange(
+        PurchaseOrderDTO[] orders = restTemplate.getForObject(
                 "http://localhost:8080/api/sales/orders",
-                HttpMethod.GET, null, PurchaseOrderDTO[].class);
-
-        PurchaseOrderDTO[] orders = response.getBody();
+                PurchaseOrderDTO[].class);
         return Arrays.asList(orders);
     }
 
@@ -164,11 +152,8 @@ public class RentalService {
 
     public PurchaseOrderDTO acceptPurchaseOrder(String id) {
         runInterceptors();
-        ResponseEntity<PurchaseOrderDTO> response = restTemplate.exchange(
-                "http://localhost:8080/api/sales/orders/{id}/accept",
-                HttpMethod.POST, null, PurchaseOrderDTO.class,id);
-
-        PurchaseOrderDTO order = response.getBody();
+        PurchaseOrderDTO order =restTemplate.postForObject(
+                "http://localhost:8080/api/sales/orders/{id}/accept",null,PurchaseOrderDTO.class,id);
         return order;
     }
 
@@ -181,9 +166,8 @@ public class RentalService {
     //---------------------------------------------------------------------------------------------------------
     public void  rejectPurchaseOrder(String id){
         runInterceptors();
-        restTemplate.exchange(
-                "http://localhost:8080/api/sales/orders/{id}/accept",
-                HttpMethod.DELETE, null, PurchaseOrderDTO.class,id);
+        restTemplate.delete("http://localhost:8080/api/sales/orders/{id}/accept",id);
+
 
 //        restTemplate.Delete parameters:
 //        url - the URL
@@ -192,9 +176,7 @@ public class RentalService {
     //---------------------------------------------------------------------------------------------------------
     public void closePurchaseOrder(String id) {
         runInterceptors();
-        restTemplate.exchange(
-                "http://localhost:8080/api/sales/orders/{id}/",
-                HttpMethod.DELETE, null, PurchaseOrderDTO.class,id);
+        restTemplate.delete("http://localhost:8080/api/sales/orders/{id}/",id);
     }
     //---------------------------------------------------------------------------------------------------------
 

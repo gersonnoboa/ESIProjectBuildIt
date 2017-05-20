@@ -1,12 +1,8 @@
 package com.buildit.procurement.application.service;
 
-import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.ConstructionSite;
-import com.buildit.procurement.domain.model.EmployeeId;
-import com.buildit.procurement.domain.model.PurchaseOrder;
 import com.buildit.procurement.rest.controller.ProcurementRestController;
-import com.buildit.rental.application.dto.ConstructionSiteDTO;
-import com.buildit.rental.application.dto.EmployeeIdDTO;
+import com.buildit.procurement.application.dto.ConstructionSiteDTO;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Service;
 

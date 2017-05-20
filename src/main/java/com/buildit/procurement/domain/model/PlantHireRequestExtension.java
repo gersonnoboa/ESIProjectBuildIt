@@ -1,7 +1,6 @@
 package com.buildit.procurement.domain.model;
 
 import com.buildit.common.domain.BusinessPeriod;
-import com.buildit.rental.application.model.PlantInventoryEntry;
 import lombok.Data;
 
 /**

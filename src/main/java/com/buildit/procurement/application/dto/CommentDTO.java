@@ -1,7 +1,6 @@
 package com.buildit.procurement.application.dto;
 
 import com.buildit.common.ResourceSupport;
-import com.buildit.rental.application.dto.EmployeeIdDTO;
 import lombok.Data;
 
 /**

@@ -1,11 +1,8 @@
 package com.buildit.procurement.application.service;
 
 import com.buildit.procurement.application.dto.CommentDTO;
-import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.Comment;
-import com.buildit.procurement.domain.model.EmployeeId;
 import com.buildit.procurement.rest.controller.ProcurementRestController;
-import com.buildit.rental.application.dto.EmployeeIdDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Service;
