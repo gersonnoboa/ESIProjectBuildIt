@@ -69,8 +69,8 @@ public class RentalService {
         reqPoDTO.setOrder_href("to");
 
         PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
-        //PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
-        PurchaseOrder po = PurchaseOrder.of("http://localhost:8080/api/inventory/plants/1");
+        PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
+        //PurchaseOrder po = PurchaseOrder.of("http://localhost:8080/api/inventory/plants/1");
 
         PlantHireRequest request = PlantHireRequest.of(
                 requestIdentifierFactory.nextPlantHireRequestID(),
@@ -123,6 +123,7 @@ public class RentalService {
         runInterceptors();
         PlantInventoryEntryDTO plant = restTemplate.getForObject(
                 "http://localhost:8080/api/inventory/plants/{id}", PlantInventoryEntryDTO.class, id);
+        plant.setPlant_href(plant.getId().getHref());
         return plant;
     }
 
@@ -135,6 +136,7 @@ public class RentalService {
         runInterceptors();
         PurchaseOrderDTO order =restTemplate.getForObject(
                 "http://localhost:8080/api/sales/orders/{id}", PurchaseOrderDTO.class, id);
+        order.setOrder_href(order.getId().getHref());
         return order;
     }
 

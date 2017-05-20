@@ -55,8 +55,8 @@ public class ProcurementRestController {
                             plantName.get(), startDate.get(), endDate.get()));
     }
 
-    //test:localhost:8090/api/procurements/po/find?id=1
-    @GetMapping("/po/find")
+    //test:localhost:8090/api/procurements/po?id=1
+    @GetMapping("/po")
     public PurchaseOrderDTO findPurchaseOrder(
         @RequestParam(name = "id", required = true) Optional<String> poId) {
 
