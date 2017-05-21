@@ -3,7 +3,6 @@ package com.buildit.procurement.application.dto;
 import com.buildit.common.ResourceSupport;
 import com.buildit.common.application.dto.BusinessPeriodDTO;
 import com.buildit.procurement.domain.model.POStatus;
-import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
 import lombok.Data;
 
 import java.math.BigDecimal;

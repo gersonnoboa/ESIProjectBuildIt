@@ -1,10 +1,8 @@
 package com.buildit.procurement.application.service;
 
-import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.PlantSupplier;
-import com.buildit.procurement.domain.model.PurchaseOrder;
 import com.buildit.procurement.rest.controller.ProcurementRestController;
-import com.buildit.rental.application.dto.PlantSupplierDTO;
+import com.buildit.procurement.application.dto.PlantSupplierDTO;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Service;
 

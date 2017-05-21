@@ -1,12 +1,8 @@
 package com.buildit.procurement.application.service;
 
-import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
-import com.buildit.procurement.domain.model.PlantHireRequest;
 import com.buildit.procurement.domain.model.PlantHireRequestUpdate;
 import com.buildit.procurement.rest.controller.ProcurementRestController;
-import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
-import com.buildit.rental.application.model.PlantInventoryEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Service;

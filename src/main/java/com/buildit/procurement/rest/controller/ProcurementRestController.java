@@ -5,8 +5,7 @@ import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestExtensionDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
 import com.buildit.procurement.domain.model.PlantHireRequest;
-import com.buildit.procurement.domain.model.PlantHireRequestExtension;
-import com.buildit.rental.application.dto.PlantInventoryEntryDTO;
+import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.application.service.PlantHireRequestAssembler;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.application.service.RentalService;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -57,8 +55,8 @@ public class ProcurementRestController {
                             plantName.get(), startDate.get(), endDate.get()));
     }
 
-    //test:localhost:8090/api/procurements/po/find?id=1
-    @GetMapping("/po/find")
+    //test:localhost:8090/api/procurements/po?id=1
+    @GetMapping("/po")
     public PurchaseOrderDTO findPurchaseOrder(
         @RequestParam(name = "id", required = true) Optional<String> poId) {
 

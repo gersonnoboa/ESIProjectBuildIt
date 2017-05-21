@@ -1,4 +1,4 @@
-package com.buildit.rental.application.dto;
+package com.buildit.procurement.application.dto;
 
 import lombok.Data;
 import org.springframework.hateoas.ResourceSupport;

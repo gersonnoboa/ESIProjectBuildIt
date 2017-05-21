@@ -11,11 +11,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
+import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootApplication
@@ -27,22 +30,25 @@ public class ProcurementApplication {
 		@Qualifier("_halObjectMapper")
 		private ObjectMapper springHateoasObjectMapper;
 
+        //unused
 		@Bean(name = "objectMapper")
 		ObjectMapper objectMapper() {
 			return springHateoasObjectMapper
-					.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+					//.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 					.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
 					.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
 					.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
 					.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-					.registerModules(new JavaTimeModule());
+					.registerModules(new JavaTimeModule())
+                    .registerModule(new Jackson2HalModule());
 		}
 		@Bean
 		public RestTemplate restTemplate() {
-			RestTemplate _restTemplate = new RestTemplate();
-			List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-			messageConverters.add(new MappingJackson2HttpMessageConverter(springHateoasObjectMapper));
-			_restTemplate.setMessageConverters(messageConverters);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new Jackson2HalModule());
+            RestTemplate _restTemplate= new RestTemplate();
 			return _restTemplate;
 		}
 	}

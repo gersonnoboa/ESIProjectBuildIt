@@ -1,4 +1,4 @@
-package com.buildit.rental.application.model;
+package com.buildit.procurement.domain.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
