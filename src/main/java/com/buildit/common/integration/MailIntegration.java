@@ -98,6 +98,25 @@ public class MailIntegration {
         invoicingGateway.sendInvoice(rootMessage);
     }
 
+    public void sendMail(String toEmail, String subject, String body, String attachmentName, String attachmentText) throws Exception{
+        JavaMailSender mailSender = new JavaMailSenderImpl();
+
+        MimeMessage rootMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(rootMessage, true);
+        helper.setFrom(gmailUsername); // Add the actual email addresses
+        helper.setTo(toEmail);   // (also here)
+        helper.setSubject(subject); // Check the spelling the subject
+        helper.setText(body + "\n\nKindly yours,\n\nBuildIt Team!");
+
+        if (attachmentName != null){
+            helper.addAttachment(attachmentName, new ByteArrayDataSource(attachmentText, "application/json"));
+        }
+
+// I am Assuming "invoicingGateway" is an autowired reference to a spring bean
+// associated with "InvoicingGateway"
+        invoicingGateway.sendInvoice(rootMessage);
+    }
+
     @Bean
     IntegrationFlow inboundMail() {
 

@@ -33,7 +33,8 @@ public class ProcurementRestController {
 
     @Autowired
     PlantHireRequestAssembler plantHireRequestAssembler;
-    //test: localhost:8090/api/procurements/plants?name=excavator&startDate=2017-01-01&endDate=2017-01-01
+    //test:
+    // localhost:8090/api/procurements/plants?name=excavator&startDate=2017-01-01&endDate=2017-01-01
     @GetMapping("/plants")
     public List<PlantInventoryEntryDTO> findAvailablePlants (
             @RequestParam(name = "name", required = false) Optional<String> plantName,
@@ -92,7 +93,8 @@ public class ProcurementRestController {
         }
     }
 
-    //test:localhost:8090/api/procurements/po/orders
+    //test:
+    // localhost:8090/api/procurements/phr/create
 
     @PostMapping("/phr/create")
     public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
@@ -110,6 +112,11 @@ public class ProcurementRestController {
 
 
         return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
+    }
+
+    @GetMapping("/phr/{id}")
+    public PlantHireRequestDTO getPlantHireRequest(@PathVariable String id) throws Exception{
+        return rentalService.getPlantHireRequest(id);
     }
 
     @PostMapping("/phr/{id}")

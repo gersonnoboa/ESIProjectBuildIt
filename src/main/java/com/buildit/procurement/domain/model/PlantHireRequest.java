@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * Created by Oleksandr on 3/21/2017.
@@ -58,6 +59,10 @@ public class PlantHireRequest {
     }
 
     public void handleClosure() {
+
+        LocalDate now = LocalDate.now();
+
+        if (now.getDayOfYear() - rentalPeriod.getStartDate().getDayOfYear() )
         status = POStatus.CLOSED;
     }
 

@@ -7,6 +7,7 @@ import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.*;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
+import com.buildit.procurement.infrastructure.PurchaseOrderIdentifierFactory;
 import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
 import com.buildit.procurement.domain.model.PlantInventoryEntry;
@@ -36,6 +37,9 @@ public class RentalService {
     RequestIdentifierFactory requestIdentifierFactory;
 
     @Autowired
+    PurchaseOrderIdentifierFactory purchaseOrderIdentifierFactory;
+
+    @Autowired
     PlantHireRequestAssembler PHRAssembler;
 
     @Autowired
@@ -63,13 +67,14 @@ public class RentalService {
         EmployeeId worksEngineer = EmployeeId.of(hireRequestDTO.getWorksEngineer().getEmployee_href());
 
         PurchaseOrderDTO reqPoDTO = new PurchaseOrderDTO();
-        reqPoDTO.set_id("1");
+        reqPoDTO.set_id(purchaseOrderIdentifierFactory.nextPurchaseOrderID());
         reqPoDTO.setPlant(hireRequestDTO.getPlant());
         reqPoDTO.setRentalPeriod(hireRequestDTO.getRentalPeriod());
         reqPoDTO.setOrder_href("to");
 
         PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
-        PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
+        //PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
+        PurchaseOrder po = PurchaseOrder.of("");
         //PurchaseOrder po = PurchaseOrder.of("http://localhost:8080/api/inventory/plants/1");
 
         PlantHireRequest request = PlantHireRequest.of(
@@ -84,7 +89,7 @@ public class RentalService {
                 plant,
                 po,
                 supplier,
-                BigDecimal.valueOf(100)
+                hireRequestDTO.getPlant().getPrice()
                 );
 
         return requestRepository.save(request);
@@ -192,6 +197,11 @@ public class RentalService {
         return requestDTO;
     }
     //---------------------------------------------------------------------------------------------------------
+
+    public PlantHireRequestDTO getPlantHireRequest(String id) {
+        PlantHireRequest phr = requestRepository.findOne(id);
+        return PHRAssembler.toResource(phr);
+    }
 
     public PlantHireRequestDTO acceptPlantHireRequest(String id) {
         PlantHireRequest phr = requestRepository.findOne(id);

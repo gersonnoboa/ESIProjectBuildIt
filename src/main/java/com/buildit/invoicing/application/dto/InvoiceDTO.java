@@ -1,4 +1,4 @@
-package com.buildit.invoicing.dto;
+package com.buildit.invoicing.application.dto;
 
 import lombok.Data;
 

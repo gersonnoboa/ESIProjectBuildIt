@@ -1,10 +1,10 @@
-package com.buildit.invoicing.service;
+package com.buildit.invoicing.application.service;
 
 import com.buildit.common.integration.MailIntegration;
 import com.buildit.invoicing.domain.model.Invoice;
 import com.buildit.invoicing.domain.model.InvoiceStatus;
 import com.buildit.invoicing.domain.repository.InvoiceRepository;
-import com.buildit.invoicing.dto.InvoiceDTO;
+import com.buildit.invoicing.application.dto.InvoiceDTO;
 import com.buildit.procurement.domain.model.PlantHireRequest;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Service;
 
-import javax.print.DocFlavor;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
