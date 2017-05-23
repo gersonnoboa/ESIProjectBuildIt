@@ -31,6 +31,10 @@ public class ProcurementRestController {
     @Autowired
     RentalService rentalService;
 
+    /**
+     * PlantInventoryEntry [/plants/{_id}]
+     * Retrieve PlantInventoryEntry details [GET]
+     */
     @Autowired
     PlantHireRequestAssembler plantHireRequestAssembler;
     //test: localhost:8090/api/procurements/plants?name=excavator&startDate=2017-01-01&endDate=2017-01-01
@@ -55,8 +59,23 @@ public class ProcurementRestController {
                             plantName.get(), startDate.get(), endDate.get()));
     }
 
+    /**
+     * PlantInventoryEntry [/plants/{_id}]
+     * Retrieve PlantInventoryEntry details [GET]
+     */
+
+
+    /**
+     * PurchaseOrder  Collection [/pos]
+     * List All PurchaseOrders [GET]
+     */
+
+    /**
+     * PurchaseOrder [/pos/{_id}]
+     * Retrieve PurchaseOrder details [GET]
+     */
     //test:localhost:8090/api/procurements/po?id=1
-    @GetMapping("/po")
+    @GetMapping("/pos")
     public PurchaseOrderDTO findPurchaseOrder(
         @RequestParam(name = "id", required = true) Optional<String> poId) {
 
@@ -68,8 +87,17 @@ public class ProcurementRestController {
         }
     }
 
-    //test:localhost:8090/api/procurements/po/close?id=1
-    @GetMapping("/po/close")
+    /**
+     * PurchaseOrder [/pos/{_id}]
+     * Update PurchaseOrder [PATCH]
+     */
+
+    /**
+     * PurchaseOrder [/pos/{_id}]
+     * Close PurchaseOrder [DELETE]
+     */
+    //test:localhost:8090/api/procurements/po?id=1
+    @DeleteMapping("/pos")
     public void closePurchaseOrder(
             @RequestParam(name = "_id", required = true) Optional<String> poId){
         if (poId.isPresent()){
@@ -80,8 +108,17 @@ public class ProcurementRestController {
         }
     }
 
+    /**
+     * PurchaseOrder [/pos/{_id}]
+     * Accept PurchaseOrder [POST]
+     */
+
+    /**
+     * PurchaseOrder [/pos/{_id}]
+     * Reject PurchaseOrder [DELETE]
+     */
     //test:localhost:8090/api/procurements/po/reject?id=1
-    @GetMapping("/po/reject")
+    @DeleteMapping("/pos/accept")
     public void rejectPurchaseOrder(
             @RequestParam(name = "_id", required = true) Optional<String> poId){
         if (poId.isPresent()){
@@ -94,7 +131,16 @@ public class ProcurementRestController {
 
     //test:localhost:8090/api/procurements/po/orders
 
-    @PostMapping("/phr/create")
+    /**
+     * PlantHireRequest Collection [/phrs]
+     * GET
+     */
+
+    /**
+     * PlantHireRequest Collection [/phrs]
+     * POST
+     */
+    @PostMapping("/phrs")
     public PlantHireRequestDTO createPlantHireRequest (@RequestBody Optional<PlantHireRequestDTO> partialDto) {
         PlantHireRequestDTO request = partialDto.get();
         System.out.println("REQUEST: " + request);
@@ -112,27 +158,47 @@ public class ProcurementRestController {
         return plantHireRequestAssembler.toResource(rentalService.createPlantHireRequest(request));
     }
 
-    @PostMapping("/phr/{id}")
-    public PlantHireRequestDTO acceptPlantHireRequest(@PathVariable String id) throws Exception {
-        return rentalService.acceptPlantHireRequest(id);
-    }
-
-    @DeleteMapping("/phr/{id}/reject")
-    public PlantHireRequestDTO rejectPlantHireRequest(@PathVariable String id) throws Exception {
-        return rentalService.rejectPlantHireRequest(id);
-    }
-
-    @PatchMapping("/phr/{id}")
+    /**
+     * PlantHireRequest Collection [/phrs/{id}]
+     * PATCH
+     */
+    @PatchMapping("/phrs/{id}")
     public PlantHireRequestDTO updatePlantHireRequest(@RequestBody Optional<PlantHireRequestUpdateDTO> partialDto){
         return rentalService.updatePlantHireRequest(partialDto.get());
     }
 
-    @DeleteMapping("/phr/{id}")
+    /**
+     * PlantHireRequest Collection [/phrs/{id}]
+     * DELETE
+     */
+    @DeleteMapping("/phrs/{id}")
     public PlantHireRequestDTO closePlantHireRequest(@PathVariable String id){
         return rentalService.closePlantHireRequest(id);
     }
 
-    @PatchMapping("/phr/{id}/extensions")
+    /**
+     * PlantHireRequest Collection [/phrs/{id}/accept]
+     * POST
+     */
+    @PostMapping("/phrs/{id}/accept")
+    public PlantHireRequestDTO acceptPlantHireRequest(@PathVariable String id) throws Exception {
+        return rentalService.acceptPlantHireRequest(id);
+    }
+
+    /**
+     * PlantHireRequest Collection [/phrs/{id}]
+     * DELETE
+     */
+    @DeleteMapping("/phrs/{id}/accept")
+    public PlantHireRequestDTO rejectPlantHireRequest(@PathVariable String id) throws Exception {
+        return rentalService.rejectPlantHireRequest(id);
+    }
+
+    /**
+     * PlantHireRequest Collection [/phrs/{id}/extensions]
+     * PATCH
+     */
+    @PatchMapping("/phrs/{id}/extensions")
     public PlantHireRequestDTO extendPlantHireRequest(@RequestBody Optional<PlantHireRequestExtensionDTO> partialDto){
         System.out.println(partialDto.get());
         return rentalService.extendPlantHireRequest(partialDto.get());
