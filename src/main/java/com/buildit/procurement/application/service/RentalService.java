@@ -1,12 +1,14 @@
 package com.buildit.procurement.application.service;
 
 import com.buildit.common.domain.BusinessPeriod;
+import com.buildit.common.integration.MailIntegration;
 import com.buildit.procurement.application.dto.PlantHireRequestDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestExtensionDTO;
 import com.buildit.procurement.application.dto.PlantHireRequestUpdateDTO;
 import com.buildit.procurement.application.dto.PurchaseOrderDTO;
 import com.buildit.procurement.domain.model.*;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
+import com.buildit.procurement.domain.repository.PurchaseOrderRepository;
 import com.buildit.procurement.infrastructure.PurchaseOrderIdentifierFactory;
 import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
 import com.buildit.procurement.application.dto.PlantInventoryEntryDTO;
@@ -48,6 +50,12 @@ public class RentalService {
     @Autowired
     PlantHireRequestUpdateAssembler plantHireRequestUpdateAssembler;
 
+    @Autowired
+    PurchaseOrderRepository purchaseOrderRepository;
+
+    @Autowired
+    MailIntegration mailIntegration;
+
     public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
         System.out.println("CREATE: " + hireRequestDTO);
         PlantInventoryEntry plant = PlantInventoryEntry.of(
@@ -72,10 +80,21 @@ public class RentalService {
         reqPoDTO.setRentalPeriod(hireRequestDTO.getRentalPeriod());
         reqPoDTO.setOrder_href("to");
 
+        BusinessPeriod period = BusinessPeriod.of(
+                hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate());
+
         PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
         //PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
-        PurchaseOrder po = PurchaseOrder.of("");
+
         //PurchaseOrder po = PurchaseOrder.of("http://localhost:8080/api/inventory/plants/1");
+
+        PurchaseOrder po = PurchaseOrder.of(
+                purchaseOrderIdentifierFactory.nextPurchaseOrderID(),
+                plant,
+                period
+        );
+
+        purchaseOrderRepository.save(po);
 
         PlantHireRequest request = PlantHireRequest.of(
                 requestIdentifierFactory.nextPlantHireRequestID(),
@@ -83,8 +102,7 @@ public class RentalService {
                 worksEngineer,
                 comment,
                 site,
-                BusinessPeriod.of(
-                        hireRequestDTO.getRentalPeriod().getStartDate(), hireRequestDTO.getRentalPeriod().getEndDate()),
+                period,
                 POStatus.PENDING,
                 plant,
                 po,
@@ -206,6 +224,28 @@ public class RentalService {
     public PlantHireRequestDTO acceptPlantHireRequest(String id) {
         PlantHireRequest phr = requestRepository.findOne(id);
         phr.handleAcceptance();
+
+        String purchaseOrder =
+                "{\n" +
+                        "  \"id\":" + phr.getOrder().get_id() + ",\n" +
+                        "  \"plant\":" + phr.getPlant().getPlant_href() + ",\n" +
+                        "  \"dueDate\": \"" + phr.getRentalPeriod().getEndDate().toString() +"\"\n" +
+                        "  \"total\": \"" + phr.getOrder().getTotal() +"\"\n" +
+                        "}\n";
+
+        phr.getOrder().handleAcceptance();
+
+        try {
+            mailIntegration.sendMail("esi2017.g17@gmail.com",
+                    "Purchase Order",
+                    "Dear customer\n\nAttached you will find the Purchase Order.",
+                    "purchase-order.json",
+                    purchaseOrder);
+        }
+        catch (Exception e){
+            System.err.println("Error");
+        }
+
         return PHRAssembler.toResource(requestRepository.save(phr));
     }
 
@@ -222,7 +262,7 @@ public class RentalService {
         return PHRAssembler.toResource(requestRepository.save(phr));
     }
 
-    public PlantHireRequestDTO updatePlantHireRequest(PlantHireRequestUpdateDTO newPhr){
+    public PlantHireRequestDTO updatePlantHireRequest(PlantHireRequestUpdateDTO newPhr) throws Exception{
         PlantHireRequest phr = requestRepository.findOne(newPhr.get_id());
         PlantHireRequestUpdate update = plantHireRequestUpdateAssembler.toResource(newPhr);
         phr.handleUpdate(update);
@@ -238,7 +278,7 @@ public class RentalService {
         PurchaseOrderDTO extendedPO =restTemplate.patchForObject(
                 "http://localhost:8080/api/sales/orders/{id}/extensions",order,PurchaseOrderDTO.class);
         PlantHireRequest phr = requestRepository.findOne(newPhr.get_id());
-        phr.setOrder(PurchaseOrder.of(extendedPO.getOrder_href()));
+        phr.setOrder(phr.getOrder());
         phr.setRentalPeriod(period);
         phr.handleExtension(phr);
         return PHRAssembler.toResource((requestRepository.save(phr)));

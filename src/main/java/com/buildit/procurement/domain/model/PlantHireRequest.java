@@ -60,20 +60,37 @@ public class PlantHireRequest {
 
     public void handleClosure() {
 
-        LocalDate now = LocalDate.now();
 
-        if (now.getDayOfYear() - rentalPeriod.getStartDate().getDayOfYear() )
-        status = POStatus.CLOSED;
+        if (order.orderStatus == POStatus.PENDING){
+            LocalDate now = LocalDate.now();
+
+            int difference = rentalPeriod.getStartDate().getDayOfYear() - now.getDayOfYear();
+            if (difference >= 1){
+                status = POStatus.CLOSED;
+            }
+        }
+        else{
+            //request for cancellation
+        }
+
+
     }
 
     public void handleAcceptance() {
         status = POStatus.OPEN;
     }
 
-    public void handleUpdate(PlantHireRequestUpdate newPhr){
-        this.comment = newPhr.getComment();
-        this.rentalPeriod = newPhr.getRentalPeriod();
-        this.plant = newPhr.getPlant();
+    public void handleUpdate(PlantHireRequestUpdate newPhr) throws Exception{
+
+        if (status == POStatus.PENDING){
+            this.comment = newPhr.getComment();
+            this.rentalPeriod = newPhr.getRentalPeriod();
+            this.plant = newPhr.getPlant();
+        }
+        else{
+            throw new Exception("Plant hire request can't be edited anymore");
+        }
+
     }
 
     public void handleExtension(PlantHireRequest newPhr) {

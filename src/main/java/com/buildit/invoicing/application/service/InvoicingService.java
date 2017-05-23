@@ -5,7 +5,9 @@ import com.buildit.invoicing.domain.model.Invoice;
 import com.buildit.invoicing.domain.model.InvoiceStatus;
 import com.buildit.invoicing.domain.repository.InvoiceRepository;
 import com.buildit.invoicing.application.dto.InvoiceDTO;
+import com.buildit.procurement.domain.model.POStatus;
 import com.buildit.procurement.domain.model.PlantHireRequest;
+import com.buildit.procurement.domain.model.PurchaseOrder;
 import com.buildit.procurement.domain.repository.PlantHireRequestRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,24 +33,59 @@ public class InvoicingService {
         System.out.println("Will process invoice: " + invoice);
 
         PlantHireRequest phr = phrRepository.findOne(invoice.getPhr_id());
-
-        if (invoice.getTotal().compareTo(BigDecimal.valueOf(1000)) >= 0){ //mayor o igual a 1000
-            invoiceRepository.save(Invoice.of(invoice.getInvoice_id(), invoice.getTotal(), phr, InvoiceStatus.PENDING));
-        }
-        else{
-
-            if (invoice.getTotal().compareTo(phr.getPrice()) == 0){
-                try {
-                    integration.sendMail("esi2017.g17@gmail.com", phr);
-                }
-                catch (Exception e){
-
-                }
+        PurchaseOrder po = phr.getOrder();
+        if (po.getOrderStatus() == POStatus.PENDING){
+            if (invoice.getTotal().compareTo(BigDecimal.valueOf(1000)) >= 0){ //mayor o igual a 1000
+                invoiceRepository.save(Invoice.of(invoice.getInvoice_id(), invoice.getTotal(), phr, InvoiceStatus.PENDING));
             }
             else{
-                System.err.println("Not equal");
+
+                if (invoice.getTotal().compareTo(phr.getPrice()) == 0){
+
+                    String sPhr =
+                            "{\n" +
+                                    "  \"order\":{\"_links\":{\"self\":{\"href\": \"" + phr.getOrder().get_xlinks() +"\"}}},\n" +
+                                    "  \"amount\":" + phr.getPrice() + ",\n" +
+                                    "  \"dueDate\": \"" + phr.getRentalPeriod().getEndDate().toString() +"\"\n" +
+                                    "}\n";
+
+                    String subject = "Invoice Purchase Order " + phr.get_id();
+                    String text = "Dear customer,\n\nPlease find attached the Invoice corresponding to your Purchase Order.";
+                    String attachmentName = "remittance.json";
+
+                    try {
+                        integration.sendMail(
+                                "esi2017.g17@gmail.com",
+                                subject,
+                                text,
+                                attachmentName,
+                                sPhr
+                        );
+                    }
+                    catch (Exception e){
+
+                    }
+                }
+                else{
+                    System.err.println("Not equal");
+                }
             }
         }
+        else{
+            try {
+                integration.sendMail(
+                        "esi2017.g17@gmail.com",
+                        "Error in PO",
+                        "There's no invoice associated to the ID " + invoice.getInvoice_id(),
+                        null,
+                        null
+                );
+            }
+            catch (Exception e){
+
+            }
+        }
+
     }
 
     public void processAttachment(GenericMessage<String> message){

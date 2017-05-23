@@ -75,29 +75,6 @@ public class MailIntegration {
                 .get();
     }
 
-    public void sendMail(String toEmail, PlantHireRequest phr) throws Exception{
-        JavaMailSender mailSender = new JavaMailSenderImpl();
-        String invoice1 =
-                "{\n" +
-                        "  \"order\":{\"_links\":{\"self\":{\"href\": \"" + phr.getOrder().getOrder_href() +"\"}}},\n" +
-                        "  \"amount\":" + phr.getPrice() + ",\n" +
-                        "  \"dueDate\": \"" + phr.getRentalPeriod().getEndDate().toString() +"\"\n" +
-                        "}\n";
-
-        MimeMessage rootMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(rootMessage, true);
-        helper.setFrom(gmailUsername); // Add the actual email addresses
-        helper.setTo(toEmail);   // (also here)
-        helper.setSubject("Invoice Purchase Order " + phr.get_id()); // Check the spelling the subject
-        helper.setText("Dear customer,\n\nPlease find attached the Invoice corresponding to your Purchase Order.\n\nKindly yours,\n\nBuildIt Team!");
-
-        helper.addAttachment("remittance.json", new ByteArrayDataSource(invoice1, "application/json"));
-
-// I am Assuming "invoicingGateway" is an autowired reference to a spring bean
-// associated with "InvoicingGateway"
-        invoicingGateway.sendInvoice(rootMessage);
-    }
-
     public void sendMail(String toEmail, String subject, String body, String attachmentName, String attachmentText) throws Exception{
         JavaMailSender mailSender = new JavaMailSenderImpl();
 

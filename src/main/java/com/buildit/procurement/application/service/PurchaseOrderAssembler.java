@@ -16,7 +16,7 @@ public class PurchaseOrderAssembler extends ResourceAssemblerSupport<PurchaseOrd
 
     public PurchaseOrderDTO toResource(PurchaseOrder purchaseOrder) {
         PurchaseOrderDTO dto = new PurchaseOrderDTO();
-        dto.setOrder_href(purchaseOrder.getOrder_href());
+        dto.setOrder_href("");
         return dto;
     }
 }
