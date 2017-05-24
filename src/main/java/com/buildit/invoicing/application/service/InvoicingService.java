@@ -32,6 +32,11 @@ public class InvoicingService {
     @Autowired
     MailIntegration integration;
 
+    public InvoiceDTO findInvoice(String id) {
+        Invoice invoice = invoiceRepository.findOne(id);
+        return invoicingAssembler.toResource(invoice);
+    }
+
     public void processInvoice(InvoiceDTO invoice) {
         System.out.println("Will process invoice: " + invoice);
 
