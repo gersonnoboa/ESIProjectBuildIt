@@ -1,5 +1,9 @@
 package com.buildit.invoicing.application.dto;
 
+import com.buildit.common.ResourceSupport;
+import com.buildit.invoicing.domain.model.InvoiceStatus;
+import com.buildit.procurement.application.dto.PlantHireRequestDTO;
+import com.buildit.procurement.domain.model.PlantHireRequest;
 import lombok.Data;
 
 import javax.print.DocFlavor;
@@ -11,10 +15,10 @@ import java.time.LocalDate;
  */
 
 @Data
-public class InvoiceDTO {
+public class InvoiceDTO extends ResourceSupport{
 
-    String invoice_id;
-    BigDecimal total;
-    String phr_id;
-    //LocalDate date;
+    String _id;
+    BigDecimal totalPrice;
+    PlantHireRequestDTO phr;
+    InvoiceStatus invoiceStatus;
 }

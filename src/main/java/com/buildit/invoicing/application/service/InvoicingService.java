@@ -27,20 +27,23 @@ public class InvoicingService {
     InvoiceRepository invoiceRepository;
 
     @Autowired
+    InvoicingAssembler invoicingAssembler;
+
+    @Autowired
     MailIntegration integration;
 
     public void processInvoice(InvoiceDTO invoice) {
         System.out.println("Will process invoice: " + invoice);
 
-        PlantHireRequest phr = phrRepository.findOne(invoice.getPhr_id());
+        PlantHireRequest phr = phrRepository.findOne(invoice.get_id());
         PurchaseOrder po = phr.getOrder();
         if (po.getOrderStatus() == POStatus.PENDING){
-            if (invoice.getTotal().compareTo(BigDecimal.valueOf(1000)) >= 0){ //mayor o igual a 1000
-                invoiceRepository.save(Invoice.of(invoice.getInvoice_id(), invoice.getTotal(), phr, InvoiceStatus.PENDING));
+            if (invoice.getTotalPrice().compareTo(BigDecimal.valueOf(1000)) >= 0){ //mayor o igual a 1000
+                invoiceRepository.save(Invoice.of(invoice.get_id(), invoice.getTotalPrice(), phr, InvoiceStatus.PENDING));
             }
             else{
 
-                if (invoice.getTotal().compareTo(phr.getPrice()) == 0){
+                if (invoice.getTotalPrice().compareTo(phr.getPrice()) == 0){
 
                     String sPhr =
                             "{\n" +
@@ -76,7 +79,7 @@ public class InvoicingService {
                 integration.sendMail(
                         "esi2017.g17@gmail.com",
                         "Error in PO",
-                        "There's no invoice associated to the ID " + invoice.getInvoice_id(),
+                        "There's no invoice associated to the ID " + invoice.get_id(),
                         null,
                         null
                 );
@@ -116,5 +119,11 @@ public class InvoicingService {
         }
 
         return map;
+    }
+
+    public InvoiceDTO acceptInvoice(String id) {
+        Invoice invoice = invoiceRepository.findOne(id);
+        invoice.handleAcceptance();
+        return invoicingAssembler.toResource(invoiceRepository.save(invoice));
     }
 }

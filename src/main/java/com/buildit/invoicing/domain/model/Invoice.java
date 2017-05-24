@@ -28,4 +28,8 @@ public class Invoice {
 
     @Enumerated(EnumType.STRING)
     InvoiceStatus invoiceStatus;
+
+    public void handleAcceptance() {
+        invoiceStatus = InvoiceStatus.APPROVED;
+    }
 }
