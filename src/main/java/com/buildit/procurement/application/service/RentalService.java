@@ -19,6 +19,7 @@ import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -55,6 +56,12 @@ public class RentalService {
 
     @Autowired
     MailIntegration mailIntegration;
+
+    @PostConstruct
+    private void setUpAuth() {
+        restTemplate.getInterceptors().add(
+                new BasicAuthorizationInterceptor("user2", "user2"));
+    }
 
     public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
         System.out.println("CREATE: " + hireRequestDTO);
