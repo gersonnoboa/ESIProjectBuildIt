@@ -10,3 +10,6 @@ insert into authorities (username, authority) values ('siteengr', 'ROLE_SITE_ENG
 insert into authorities (username, authority) values ('worksengr', 'ROLE_WORKS_ENGINEER');
 insert into authorities (username, authority) values ('supervisor', 'ROLE_SITE_ENGINEER');
 insert into authorities (username, authority) values ('supervisor', 'ROLE_WORKS_ENGINEER');
+
+INSERT INTO EMPLOYEE VALUES('1', 'Luciano', 'Site Engineer')
+INSERT INTO PLANT_HIRE_REQUEST VALUES('1', '', '', 'PENDING', 100, 'Excavator', '', 100, '2018-04-30', '2018-03-30', '', '1', 'OPEN', '', '1')
