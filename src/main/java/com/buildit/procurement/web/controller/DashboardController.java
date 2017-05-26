@@ -11,10 +11,15 @@ import com.buildit.procurement.web.dto.CatalogQueryDTO;
 import com.buildit.procurement.web.dto.PartialPlantHireRequestDTO;
 import com.sun.org.apache.xml.internal.resolver.Catalog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -31,11 +36,18 @@ public class DashboardController {
     @Autowired
     RequestIdentifierFactory identifierFactory;
 
-    @GetMapping("/phrs")
+    @GetMapping("/phr")
     public String getPhr(Model model, @RequestParam(name="id") String id){
         PlantHireRequestDTO phr = rentalService.getPlantHireRequest(id);
         model.addAttribute("phr", phr);
         return "dashboard/phrs/show";
+    }
+
+    @GetMapping("/phrs")
+    public String getPhrs(Model model){
+        List<PlantHireRequest> phrs = rentalService.getAllPlantHireRequests();
+        model.addAttribute("phrs", phrs);
+        return "dashboard/phrs/query-phrs";
     }
 
     @GetMapping("/plants/form")
@@ -56,17 +68,29 @@ public class DashboardController {
         PlantHireRequestDTO phr = new PlantHireRequestDTO();
         model.addAttribute("phr", phr);
 
+        System.out.println(query);
         model.addAttribute("catalogQuery", query);
         return "dashboard/phrs/query-result";
     }
 
     @PostMapping("/plants/new")
     public String createPhr(Model model, PartialPlantHireRequestDTO dto){
+
         PlantHireRequestDTO phr = new PlantHireRequestDTO();
         phr.set_id(identifierFactory.nextPlantHireRequestID());
-        phr.setRentalPeriod(dto.getRentalPeriod());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        phr.setRentalPeriod(BusinessPeriodDTO.of(LocalDate.parse(dto.getStartDate(), formatter), LocalDate.parse(dto.getEndDate(), formatter)));
         phr.setStatus(POStatus.PENDING);
-        phr.setPlant(dto.getEntry());
+
+        PlantInventoryEntryDTO entry = new PlantInventoryEntryDTO();
+        entry.set_id(dto.getId());
+        entry.setName(dto.getName());
+        entry.setDescription(dto.getDescription());
+        entry.setPrice(new BigDecimal(dto.getPrice()));
+        entry.setPlant_href(dto.getPlant_href());
+        phr.setPlant(entry);
 
         EmployeeIdDTO siteEngineer = new EmployeeIdDTO();
         siteEngineer.setEmployee_href("");

@@ -117,6 +117,13 @@ public class RentalService {
                 hireRequestDTO.getPlant().getPrice()
                 );
 
+
+        System.out.println(restTemplate);
+        System.out.println(reqPoDTO);
+
+        PurchaseOrderDTO order = restTemplate.postForObject("http://localhost:8080/api/sales/orders",reqPoDTO,PurchaseOrderDTO.class);
+
+
         return requestRepository.save(request);
     }
 
@@ -222,6 +229,12 @@ public class RentalService {
         return requestDTO;
     }
     //---------------------------------------------------------------------------------------------------------
+
+    public List<PlantHireRequest> getAllPlantHireRequests(){
+        runInterceptors();
+        List<PlantHireRequest> requests = requestRepository.findAll();
+        return requests;
+    }
 
     public PlantHireRequestDTO getPlantHireRequest(String id) {
         PlantHireRequest phr = requestRepository.findOne(id);

@@ -28,9 +28,15 @@
                     <td th:text="${p.price}"></td>
                     <td>
                         <form style ='float:left; padding:5px; height:0px' th:object="${dto}" th:method="post" th:action="@{'/dashboard/plants/new'}">
-                            <input type="hidden" name="id" th:value="${p}" th:field="*{entry}"></input>
-                            <input type="hidden" name="rentalPeriod.startDate" th:value="${catalogQuery.rentalPeriod.startDate}" th:field="*{rentalPeriod.startDate}"></input>
-                            <input type="hidden" name="rentalPeriod.endDate" th:value="${catalogQuery.rentalPeriod.endDate}" th:field="*{rentalPeriod.endDate}"></input>
+
+                            <input type="hidden" name="name" th:value="${p.name}"></input>
+                            <input type="hidden" name="description" th:value="${p.description}"></input>
+                            <input type="hidden" name="price" th:value="${p.price}"></input>
+                            <input type="hidden" name="id" th:value="${p._id}"></input>
+                            <input type="hidden" name="plant_href" th:value="${p.plant_href}"></input>
+
+                            <input type="hidden" name="startDate" th:value="${catalogQuery.rentalPeriod.startDate}"></input>
+                            <input type="hidden" name="endDate" th:value="${catalogQuery.rentalPeriod.endDate}"></input>
                             <button class="btn btn-default btn-xs" type="submit">Create PHR</button>
                         </form>
                     </td>
