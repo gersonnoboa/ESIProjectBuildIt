@@ -6,7 +6,7 @@
     "endDate": null,
     "_links": {
       "self": {
-        "href": "http://localhost:8080/api/inventory/plants/1"
+        "href": "http://193.40.11.135:80/api/inventory/plants/1"
       }
     },
     "_xlinks": []
@@ -19,7 +19,7 @@
   "status": "CLOSED",
   "_links": {
     "self": {
-      "href": "http://localhost:8080/api/sales/orders/1"
+      "href": "http://193.40.11.135:80/api/sales/orders/1"
     }
   },
   "_xlinks": []

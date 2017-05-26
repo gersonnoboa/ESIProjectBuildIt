@@ -8,8 +8,8 @@
   "plant":{
     "_id":"2",
     "name":"Mini excavator",
-    "plant_href":"http://localhost:8080/api/inventory/plants/2",
-    "links":[{"rel":"self","href":"http://localhost:8080/api/inventory/plants/2"}]
+    "plant_href":"http://193.40.11.135:80/api/inventory/plants/2",
+    "links":[{"rel":"self","href":"http://193.40.11.135:80/api/inventory/plants/2"}]
   },
   "order":null,
   "links":[]

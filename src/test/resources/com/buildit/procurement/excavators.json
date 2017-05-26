@@ -3,10 +3,10 @@
     "name": "Mini excavator",
     "startDate":[2017,8,12],
     "endDate":[2017,8,16],
-    "plant_href": "http://localhost:8080/api/inventory/plants/1",
+    "plant_href": "http://193.40.11.135:80/api/inventory/plants/1",
     "_links": {
       "self": {
-        "href": "http://localhost:8080/api/inventory/plants/1"
+        "href": "http://193.40.11.135:80/api/inventory/plants/1"
       }
     }
   },
@@ -15,10 +15,10 @@
     "name": "Mini excavator",
     "startDate":[2017,8,12],
     "endDate":[2017,8,16],
-    "plant_href": "http://localhost:8080/api/inventory/plants/2",
+    "plant_href": "http://193.40.11.135:80/api/inventory/plants/2",
     "_links": {
       "self": {
-        "href": "http://localhost:8080/api/inventory/plants/2"
+        "href": "http://193.40.11.135:80/api/inventory/plants/2"
       }
     }
   }

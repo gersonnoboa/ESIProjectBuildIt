@@ -10,7 +10,7 @@
     "name": "Mini excavator",
     "startDate": null,
     "endDate": null,
-    "plant_href": "http://localhost:8080/api/inventory/plants/2"
+    "plant_href": "http://193.40.11.135:80/api/inventory/plants/2"
   },
   "order": {
     "_id": null,
@@ -18,7 +18,7 @@
     "rentalPeriod": null,
     "total": null,
     "status": null,
-    "order_href": "http://localhost:8080/api/sales/orders/fe936fdb-fbc1-4a96-a03b-2eca419f0ab1",
+    "order_href": "http://193.40.11.135:80/api/sales/orders/fe936fdb-fbc1-4a96-a03b-2eca419f0ab1",
     "_xlinks": []
   },
   "_links": {

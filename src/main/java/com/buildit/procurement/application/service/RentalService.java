@@ -93,7 +93,7 @@ public class RentalService {
         PurchaseOrderDTO poDTO = createPurchaseOrder(reqPoDTO);
         //PurchaseOrder po = PurchaseOrder.of(poDTO.getId().getHref());
 
-        //PurchaseOrder po = PurchaseOrder.of("http://localhost:8080/api/inventory/plants/1");
+        //PurchaseOrder po = PurchaseOrder.of("http://193.40.11.135:80/api/inventory/plants/1");
 
         PurchaseOrder po = PurchaseOrder.of(
                 purchaseOrderIdentifierFactory.nextPurchaseOrderID(),
@@ -121,7 +121,7 @@ public class RentalService {
         System.out.println(restTemplate);
         System.out.println(reqPoDTO);
 
-        PurchaseOrderDTO order = restTemplate.postForObject("http://localhost:8080/api/sales/orders",reqPoDTO,PurchaseOrderDTO.class);
+        PurchaseOrderDTO order = restTemplate.postForObject("http://193.40.11.135:80/api/sales/orders",reqPoDTO,PurchaseOrderDTO.class);
 
 
         return requestRepository.save(request);
@@ -143,7 +143,7 @@ public class RentalService {
         runInterceptors();
 
         PlantInventoryEntryDTO[] plants = restTemplate.getForObject(
-                "http://localhost:8080/api/inventory/plants?name={name}&startDate={start}&endDate={end}",
+                "http://193.40.11.135:80/api/inventory/plants?name={name}&startDate={start}&endDate={end}",
                 PlantInventoryEntryDTO[].class, plantName, startDate, endDate);
         System.out.println("Plants: " + Arrays.asList(plants));
 
@@ -159,7 +159,7 @@ public class RentalService {
     public PlantInventoryEntryDTO findPlant(String id) {
         runInterceptors();
         PlantInventoryEntryDTO plant = restTemplate.getForObject(
-                "http://localhost:8080/api/inventory/plants/{id}", PlantInventoryEntryDTO.class, id);
+                "http://193.40.11.135:80/api/inventory/plants/{id}", PlantInventoryEntryDTO.class, id);
         plant.setPlant_href(plant.getId().getHref());
         return plant;
     }
@@ -172,7 +172,7 @@ public class RentalService {
     public PurchaseOrderDTO findPurchaseOrder(String id) {
         runInterceptors();
         PurchaseOrderDTO order =restTemplate.getForObject(
-                "http://localhost:8080/api/sales/orders/{id}", PurchaseOrderDTO.class, id);
+                "http://193.40.11.135:80/api/sales/orders/{id}", PurchaseOrderDTO.class, id);
         order.setOrder_href(order.getId().getHref());
         return order;
     }
@@ -182,7 +182,7 @@ public class RentalService {
     public List<PurchaseOrderDTO> findAll(){
         runInterceptors();
         PurchaseOrderDTO[] orders = restTemplate.getForObject(
-                "http://localhost:8080/api/sales/orders",
+                "http://193.40.11.135:80/api/sales/orders",
                 PurchaseOrderDTO[].class);
         return Arrays.asList(orders);
     }
@@ -192,7 +192,7 @@ public class RentalService {
     public PurchaseOrderDTO acceptPurchaseOrder(String id) {
         runInterceptors();
         PurchaseOrderDTO order =restTemplate.postForObject(
-                "http://localhost:8080/api/sales/orders/{id}/accept",null,PurchaseOrderDTO.class,id);
+                "http://193.40.11.135:80/api/sales/orders/{id}/accept",null,PurchaseOrderDTO.class,id);
         return order;
     }
 
@@ -205,7 +205,7 @@ public class RentalService {
     //---------------------------------------------------------------------------------------------------------
     public void  rejectPurchaseOrder(String id){
         runInterceptors();
-        restTemplate.delete("http://localhost:8080/api/sales/orders/{id}/accept",id);
+        restTemplate.delete("http://193.40.11.135:80/api/sales/orders/{id}/accept",id);
 
 
 //        restTemplate.Delete parameters:
@@ -215,13 +215,13 @@ public class RentalService {
     //---------------------------------------------------------------------------------------------------------
     public void closePurchaseOrder(String id) {
         runInterceptors();
-        restTemplate.delete("http://localhost:8080/api/sales/orders/{id}/",id);
+        restTemplate.delete("http://193.40.11.135:80/api/sales/orders/{id}/",id);
     }
     //---------------------------------------------------------------------------------------------------------
 
     public PurchaseOrderDTO createPurchaseOrder(PurchaseOrderDTO requestDTO) {
         System.out.println("dto: "+requestDTO);
-        //PurchaseOrderDTO order =restTemplate.postForObject("http://localhost:8080/api/sales/orders/",requestDTO,PurchaseOrderDTO.class);
+        //PurchaseOrderDTO order =restTemplate.postForObject("http://193.40.11.135:80/api/sales/orders/",requestDTO,PurchaseOrderDTO.class);
 
         PurchaseOrderDTO order = new PurchaseOrderDTO();
         order.set_id("1");
@@ -298,7 +298,7 @@ public class RentalService {
                     newPhr.getOrder().getOrder_href(),PurchaseOrderDTO.class);
             order.setRentalPeriod(newPhr.getRentalPeriod());
             PurchaseOrderDTO extendedPO =restTemplate.patchForObject(
-                    "http://localhost:8080/api/sales/orders/{id}/extensions",order,PurchaseOrderDTO.class);
+                    "http://193.40.11.135:80/api/sales/orders/{id}/extensions",order,PurchaseOrderDTO.class);
         }
 
         PlantHireRequest phr = requestRepository.findOne(newPhr.get_id());

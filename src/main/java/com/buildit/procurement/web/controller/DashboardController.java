@@ -9,7 +9,7 @@ import com.buildit.procurement.domain.model.PlantInventoryEntry;
 import com.buildit.procurement.infrastructure.RequestIdentifierFactory;
 import com.buildit.procurement.web.dto.CatalogQueryDTO;
 import com.buildit.procurement.web.dto.PartialPlantHireRequestDTO;
-import com.sun.org.apache.xml.internal.resolver.Catalog;
+//import com.sun.org.apache.xml.internal.resolver.Catalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.stereotype.Controller;
