@@ -1,5 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Plant Hire Request</title>
 
@@ -8,55 +8,65 @@
 <body>
 
 <div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">Plant Hire Request</div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-2"><b>ID</b></div>
-                <div class="col-sm-8" th:text="${phr._id}"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2"><b>Start date</b></div>
-                <div class="col-sm-8" th:text="${phr.rentalPeriod.startDate}"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2"><b>End date</b></div>
-                <div class="col-sm-8" th:text="${phr.rentalPeriod.endDate}"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2"><b>Status</b></div>
-                <div class="col-sm-8" th:text="${phr.status}"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2"><b>Plant name</b></div>
-                <div class="col-sm-8" th:text="${phr.plant.name}"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2"><b>Comment</b></div>
-                <div class="col-sm-8" th:text="${phr.comment.explanation}"></div>
-            </div>
+    <div sec:authorize="(isAuthenticated()==false)">
+        Login Error. <a href="/login">Click here to go back to login screen</a>
+    </div>
+    <div sec:authorize="hasAuthority('ROLE_ADMIN') == false">
+        Role Access error. Only administrators and maintenance staff can access this page. <a href="/login">Click here to sign in as another user.</a>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+            <div class="panel panel-default">
+                <div class="panel-heading">Plant Hire Request</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-2"><b>ID</b></div>
+                        <div class="col-sm-8" th:text="${phr._id}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"><b>Start date</b></div>
+                        <div class="col-sm-8" th:text="${phr.rentalPeriod.startDate}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"><b>End date</b></div>
+                        <div class="col-sm-8" th:text="${phr.rentalPeriod.endDate}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"><b>Status</b></div>
+                        <div class="col-sm-8" th:text="${phr.status}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"><b>Plant name</b></div>
+                        <div class="col-sm-8" th:text="${phr.plant.name}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"><b>Comment</b></div>
+                        <div class="col-sm-8" th:text="${phr.comment.explanation}"></div>
+                    </div>
 
-            <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/approve'}">
-                <input type="hidden" name="id" th:value="${phr._id}"></input>
-                <button class="btn btn-default btn-xs" type="submit">Approve PHR</button>
-            </form>
+                    <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/approve'}">
+                        <input type="hidden" name="id" th:value="${phr._id}"></input>
+                        <button class="btn btn-default btn-xs" type="submit">Approve PHR</button>
+                    </form>
 
-            <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/reject'}">
-                <input type="hidden" name="id" th:value="${phr._id}"></input>
-                <button class="btn btn-default btn-xs" type="submit">Reject PHR</button>
-            </form>
+                    <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/reject'}">
+                        <input type="hidden" name="id" th:value="${phr._id}"></input>
+                        <button class="btn btn-default btn-xs" type="submit">Reject PHR</button>
+                    </form>
 
-            <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="get" th:action="@{'/dashboard/phrs/modify'}">
-                <input type="hidden" name="id" th:value="${phr._id}"></input>
-                <button class="btn btn-default btn-xs" type="submit">Modify PHR</button>
-            </form>
+                    <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="get" th:action="@{'/dashboard/phrs/modify'}">
+                        <input type="hidden" name="id" th:value="${phr._id}"></input>
+                        <button class="btn btn-default btn-xs" type="submit">Modify PHR</button>
+                    </form>
 
-            <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/cancel'}">
-                <input type="hidden" name="id" th:value="${phr._id}"></input>
-                <button class="btn btn-default btn-xs" type="submit">Cancel PHR</button>
-            </form>
+                    <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/cancel'}">
+                        <input type="hidden" name="id" th:value="${phr._id}"></input>
+                        <button class="btn btn-default btn-xs" type="submit">Cancel PHR</button>
+                    </form>
 
 
+                </div>
+            </div>
         </div>
     </div>
 </div>
