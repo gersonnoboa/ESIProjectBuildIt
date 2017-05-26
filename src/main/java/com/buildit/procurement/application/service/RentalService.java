@@ -60,7 +60,7 @@ public class RentalService {
     @PostConstruct
     private void setUpAuth() {
         restTemplate.getInterceptors().add(
-                new BasicAuthorizationInterceptor("user2", "user2"));
+                new BasicAuthorizationInterceptor("user1", "user1"));
     }
 
     public PlantHireRequest createPlantHireRequest (PlantHireRequestDTO hireRequestDTO) {
@@ -263,7 +263,7 @@ public class RentalService {
         return PHRAssembler.toResource(requestRepository.save(phr));
     }
 
-    public PlantHireRequestDTO closePlantHireRequest(String id){
+    public PlantHireRequestDTO closePlantHireRequest(String id) throws Exception{
         PlantHireRequest phr = requestRepository.findOne(id);
         phr.handleClosure();
         return PHRAssembler.toResource(requestRepository.save(phr));
@@ -279,11 +279,15 @@ public class RentalService {
     public PlantHireRequestDTO extendPlantHireRequest(PlantHireRequestExtensionDTO newPhr) {
         BusinessPeriod period = BusinessPeriod.of(
                 newPhr.getRentalPeriod().getStartDate(),newPhr.getRentalPeriod().getEndDate());
-        PurchaseOrderDTO order =restTemplate.getForObject(
-                newPhr.getOrder().getOrder_href(),PurchaseOrderDTO.class);
-        order.setRentalPeriod(newPhr.getRentalPeriod());
-        PurchaseOrderDTO extendedPO =restTemplate.patchForObject(
-                "http://localhost:8080/api/sales/orders/{id}/extensions",order,PurchaseOrderDTO.class);
+
+        if (newPhr.getOrder().getOrder_href() != null && !newPhr.getOrder().getOrder_href().equalsIgnoreCase("")){
+            PurchaseOrderDTO order =restTemplate.getForObject(
+                    newPhr.getOrder().getOrder_href(),PurchaseOrderDTO.class);
+            order.setRentalPeriod(newPhr.getRentalPeriod());
+            PurchaseOrderDTO extendedPO =restTemplate.patchForObject(
+                    "http://localhost:8080/api/sales/orders/{id}/extensions",order,PurchaseOrderDTO.class);
+        }
+
         PlantHireRequest phr = requestRepository.findOne(newPhr.get_id());
         phr.setOrder(phr.getOrder());
         phr.setRentalPeriod(period);

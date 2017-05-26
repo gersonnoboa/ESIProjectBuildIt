@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
  */
 @Embeddable
 @Value
-@NoArgsConstructor(force=true,access= AccessLevel.PRIVATE)
+@NoArgsConstructor(force=true,access= AccessLevel.PUBLIC)
 @AllArgsConstructor(staticName="of")
 public class BusinessPeriod {
     LocalDate startDate;

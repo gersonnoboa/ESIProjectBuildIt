@@ -164,7 +164,7 @@ public class ProcurementRestController {
      * DELETE
      */
     @DeleteMapping("/phrs/{id}")
-    public PlantHireRequestDTO closePlantHireRequest(@PathVariable String id){
+    public PlantHireRequestDTO closePlantHireRequest(@PathVariable String id) throws Exception{
         return rentalService.closePlantHireRequest(id);
     }
 

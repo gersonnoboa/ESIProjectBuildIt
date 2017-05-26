@@ -58,7 +58,7 @@ public class PlantHireRequest {
         status = POStatus.REJECTED;
     }
 
-    public void handleClosure() {
+    public void handleClosure() throws Exception{
 
 
         if (order.orderStatus == POStatus.PENDING){
@@ -70,7 +70,7 @@ public class PlantHireRequest {
             }
         }
         else{
-            //request for cancellation
+            throw new Exception("Plant hire request can't be cancelled.");
         }
 
 

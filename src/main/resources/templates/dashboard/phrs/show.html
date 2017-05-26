@@ -27,6 +27,34 @@
                 <div class="col-sm-2"><b>Status</b></div>
                 <div class="col-sm-8" th:text="${phr.status}"></div>
             </div>
+            <div class="row">
+                <div class="col-sm-2"><b>Plant name</b></div>
+                <div class="col-sm-8" th:text="${phr.plant.name}"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2"><b>Comment</b></div>
+                <div class="col-sm-8" th:text="${phr.comment.explanation}"></div>
+            </div>
+
+            <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/approve'}">
+                <input type="hidden" name="id" th:value="${phr._id}"></input>
+                <button class="btn btn-default btn-xs" type="submit">Approve PHR</button>
+            </form>
+
+            <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/reject'}">
+                <input type="hidden" name="id" th:value="${phr._id}"></input>
+                <button class="btn btn-default btn-xs" type="submit">Reject PHR</button>
+            </form>
+
+            <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="get" th:action="@{'/dashboard/phrs/modify'}">
+                <input type="hidden" name="id" th:value="${phr._id}"></input>
+                <button class="btn btn-default btn-xs" type="submit">Modify PHR</button>
+            </form>
+
+            <form style ='float:left; padding:5px; height:0px' th:object="${phr}" th:method="post" th:action="@{'/dashboard/phrs/cancel'}">
+                <input type="hidden" name="id" th:value="${phr._id}"></input>
+                <button class="btn btn-default btn-xs" type="submit">Cancel PHR</button>
+            </form>
 
 
         </div>
